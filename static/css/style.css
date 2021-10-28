@@ -103,20 +103,7 @@
   -webkit-background-size;
   background-size:cover;
 }
-.carousel-caption p{
-   width: 90%;
-   margin:auto;
-   font-size:23px;
-   line-height:1.9;
-   color:white;
-}
-.carousel-caption h5{
-   width: 80%;
-   margin:auto;
-   font-size:40px;
-   line-height:1.9;
-   color:white;
-}
+
 
 
 
