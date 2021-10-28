@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+
+    <title>Superadmin</title>
+
+<style>
+body {
+
+	                 background: #00416A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #E4E5E6, #00416A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+          }
+
+          .d-flex{
+                     margin-top:10px;
+                     width:400px;
+                     margin-left:400px;
+                 }
+                 p{
+                        float:left;
+                        margin-right:500px;
+                        margin-top:11px;
+                    }
+
+   </style>
+
+
+
+</head>
+<body>
+
+
+
+
+     <div class="nr ml-auto">
+    <div class="nav-right">
+         <p>COVID-19 Hospitals</p>
+        <a  href="/shome">Home</a>
+
+        <a  href="/shospital">Hospital</a>
+
+
+        <a  href="/hospitalrequest">Hospital Request</a>
+
+
+
+
+      <div class="dp">
+       <button class="dropbtn">Profile
+
+       </button>
+      <div class="dc">
+      <a href="/sprofile">Profile</a>
+      <a href="/">Logout</a>
+
+      </div>
+     </div>
+
+
+    </div>
+    </div>
+
+
+
+  <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-dark" type="submit">Search</button>
+      </form>
+
+
+ <div class="container">
+        <div class="row">
+            <div class="col md-2">
+
+   <button type="button" style="margin:5px;" class=" btn btn-dark float-right" data-toggle="modal" data-target="#mymodal">Add Hospital</button>  <br>
+
+           <div class="table-responsive-sm">
+             <table class="table table-sm table-hover table-dark table-bordered  table-stripped">
+             <tr>
+
+               <th>Hospital_id</th>
+                 <th>Hospital_name</th>
+                 <th>District</th>
+               <th>Address</th>
+               <th>Email</th>
+                 <th>Password</th>
+                 <th>Phone</th>
+                 <th>Image</th>
+
+                 <th>Action</th>
+
+
+           </tr>
+
+              <tr>
+                    <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                   <td><img src="/static/" alt="" border=3 height=40 width=40 ></td>
+
+
+                  <td>
+                       <a href="" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalview">View</a>
+
+
+                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+
+                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                  </td>
+
+
+              </tr>
+
+             </table>
+           </div>
+
+    <!--Hospital View-->
+
+
+    <div id="modalview" class="modal fade" role="dialog">
+
+           <div class="modal-dialog modal-lg">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">View Image</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+
+                           <div>
+                                <label>Hospital</label>
+                                <img src=" " alt="" border=3 height=700 width=750 >
+                            </div><br>
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+
+
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+
+
+
+
+
+
+
+   <!--Hospital Edit-->
+
+
+             <div id="modaledit" class="modal fade" role="dialog">
+
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please Update Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form    action="" method="POST"   enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="Hospital_id" value="">
+                           </div>
+
+                           <div class="form-group">
+                               Hospital Name:
+                               <input type="text"   class="form-control" name="Hospital_name"  value=" ">
+                           </div>
+
+
+
+                           <div class="form-group">
+                                   District:
+                               <input type="text"   class="form-control" name="District"  value=" ">
+                           </div>
+
+
+
+                           <div class="form-group">
+                                Address:
+                               <input type="text"   class="form-control" name="Address" value=" " >
+                           </div>
+
+                            <div class="form-group">
+                                Email:
+                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value=" " >
+                           </div>
+
+                            <div class="form-group">
+                                Password:
+                               <input type="password"   class="form-control" name="Password" value="" >
+                           </div>
+
+                           <div class="form-group">
+                                Phone:
+                               <input type="tel"   class="form-control" name="Phone" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" value=" " >
+                           </div>
+
+
+
+                            <div class="form-group">
+                                <label id="fileu1">Hospital</label>
+                                   <div class="form-group">
+                                     <input type="hidden" class="form-control"  name="file11" value=" " >
+                                  </div>
+                                <input type="file"   class="form-control" name="file1">
+                           </div><br><br>
+
+
+
+
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+
+
+
+  <!--Add Hospital-->
+
+
+
+  <div id="mymodal" class="modal fade" role="dialog">
+
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please insert Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form  action="" method="POST"  enctype="multipart/form-data">
+                           <div class="form-group">
+
+                               <input type="text" placeholder="Hospital_name" class="form-control" name="Hospital_name" required="1">
+                           </div>
+
+
+                           <div class="form-group">
+
+                               <input type="text" placeholder="District" class="form-control" name="District" required="1">
+                           </div>
+
+                           <div class="form-group">
+
+                               <input type="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="Email" required="1">
+                           </div>
+
+
+
+                           <div class="form-group">
+
+                               <input type="password" placeholder="Password" class="form-control" name="Password" required="1" >
+                           </div>
+
+                            <div class="form-group">
+
+                               <input type="tel" placeholder="Phone" class="form-control" name="Phone" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" required="1" >
+                           </div>
+
+
+                           <div class="form-group">
+                               <label id="file3">Hospital</label>
+                               <input type="file"   class="form-control" name="file1" required="1">
+                           </div><br><br>
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Insert</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+                         <!-- Preview-->
+                         <div id='preview'></div>
+</div>
+
+
+               </div>
+           </div>
+       </div>
+
+
+</div>
+        </div>
+ </div>
+
+
+      <script src="static/js/jQuery.js"></script>
+       <script src="static/js/bootstrap.min.js"></script>
+       <script src="static/js/all.min.js"></script>
+</body>
+</html>

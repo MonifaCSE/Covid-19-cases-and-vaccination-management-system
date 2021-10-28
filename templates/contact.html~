@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/estyle.css')}}">
+    <title>Contact us</title>
+    <style>
+
+     .bg-i{
+              background:skyblue;
+              }
+             h6{
+                        font-size:20px;
+                        float:left;
+                        margin-right:600px;
+                        margin-top:11px;
+                    }
+
+
+
+    </style>
+</head>
+<body>
+<center>
+ <nav>
+
+    <div class="nr ml-auto">
+
+    <div class="nav-right">
+        <h6>Contact Us</h6>
+        <a  href="/">Home</a>
+
+        <a   href="/about">About</a>
+
+        <a  href="/portfolio">Portfolio</a>
+
+        <a  href="/services">Services</a>
+
+
+
+
+      <div class="dp">
+       <button class="dropbtn">Login
+
+       </button>
+      <div class="dc">
+      <a href="/alogin">Superadmin</a>
+      <a href="/alogin">Admin</a>
+      <a href="/rlogin">Receptionist</a>
+        <a href="/ulogin">User</a>
+      </div>
+     </div>
+     <a class="nav-link text-dark" href="/contact">Contact</a>
+
+    </div>
+    </div>
+   </nav>
+
+    <div>
+        <h5>We are available 24/7,So don't hesitate to contact us</h5>
+         <h5>Corona Information</h5>
+        <h5>National Call Center:333-1</h5>
+        <h5>Health Center:16263</h5>
+        <h5>COVID-19 Telle Health:09666777222</h5>
+
+        <p>To know more about COVID-19 Info  <a class="" href="https://corona.gov.bd/">Click Here</a></p>
+        <h5>Here is The map of covid-19 testing Hospital</h5>
+        <p><iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d58423.95880779963!2d90.36485672248486!3d23.765294907227297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1scovid-19%20testing%20center%20in%20bangladesh!5e0!3m2!1sen!2sbd!4v1629550841813!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe></p>
+    </div>
+
+</center>
+
+<script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+ <script src="static/js/all.min.js"></script>
+</body>
+</html>

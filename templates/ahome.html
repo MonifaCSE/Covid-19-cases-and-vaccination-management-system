@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+    <title>Title</title>
+   <style>
+
+   body {
+
+	                 background-image: url({{ url_for('static', filename='image/ad2.jpg')}});
+					 background-size: cover;
+                     background-repeat:no-repeat;
+                     background-position: center;
+                     background-attachment:fixed;
+          }
+
+         .to{
+            margin-top:80px;
+         }
+          p{
+                        float:left;
+                        margin-right:300px;
+                        margin-top:11px;
+                    }
+
+
+
+   </style>
+
+
+
+</head>
+<body>
+<div class="nr ml-auto">
+    <div class="nav-right">
+             <p>Admin Dashboard</p>
+        <a href="/ahome">Home</a>
+  <div class="dp">
+    <button class="dropbtn">Doctor
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dc">
+      <a href="/adoctor">Doctor List</a>
+      <a href="/dsalary">Salary</a>
+    </div>
+  </div>
+
+    <div class="dp">
+    <button class="dropbtn">Bed
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dc">
+      <a href="/abed">Bed List</a>
+      <a href="/abedallotment">Bed Allotment</a>
+        <a href="/abedrequest">Bed Request</a>
+    </div>
+  </div>
+
+        <div class="dp">
+    <button class="dropbtn">Patient
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dc">
+      <a href="/apatient">Patient List</a>
+      <a href="/apayment">Payment</a>
+    </div>
+  </div>
+
+         <div class="dp">
+    <button class="dropbtn">Receptionist
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dc">
+      <a href="/areceptionist">Receptionist List</a>
+      <a href="/rsalary">Salary</a>
+    </div>
+  </div>
+
+
+    <div class="dp">
+    <button class="dropbtn">Vaccine
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dc">
+      <a href="/adoze1">Doze 1</a>
+      <a href="/adoze2">Doze 2</a>
+      <a href="/vaccinated">Vaccinated</a>
+    </div>
+  </div>
+
+     <div class="dp">
+    <button class="dropbtn">Admin
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dc">
+      <a href="/adminprofile">Profile</a>
+      <a href="/">Logout</a>
+
+    </div>
+  </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+  <script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/all.min.js"></script>
+
+</body>
+</html>

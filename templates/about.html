@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/estyle.css')}}">
+    <title>Title</title>
+    <style>
+
+     nav{
+              background:skyblue;
+              }
+
+
+
+            .col{
+                 margin-top:10px;
+            }
+
+              h6{
+                        font-size:20px;
+                        float:left;
+                        margin-right:600px;
+                        margin-top:11px;
+                    }
+
+
+    </style>
+</head>
+<body>
+<center>
+<nav>
+
+    <div class="nr ml-auto">
+
+    <div class="nav-right">
+        <h6>Services</h6>
+        <a  href="/">Home</a>
+
+        <a   href="/about">About</a>
+
+        <a  href="/portfolio">Portfolio</a>
+
+        <a  href="/services">Services</a>
+
+        <div class="dp">
+       <button class="dropbtn">Login
+
+       </button>
+      <div class="dc">
+      <a href="/alogin">Superadmin</a>
+      <a href="/alogin">Admin</a>
+      <a href="/rlogin">Receptionist</a>
+        <a href="/ulogin">User</a>
+      </div>
+     </div>
+     <a class="nav-link text-dark" href="/contact">Contact</a>
+
+    </div>
+    </div>
+   </nav>
+
+
+
+   <div class="container overflow-hidden">
+
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border bg-light">
+         <h3>To know more about COVID-19</h3> <a class="" href="https://news.google.com/covid19/map?hl=en-US&mid=%2Fm%2F0162b&gl=US&ceid=US%3Aen">Click Here</a>
+         <h3>Healing with a Caring Touch</h3>
+         <img src="{{ url_for('static', filename='image/h6.jpg')}}"    height="430" width="400"></div>
+    </div>
+    <div class="col">
+      <div class="p-3 border bg-light">
+           <b>Coronavirus (COVID-19) statistics data</b>
+<p>About this data
+It changes rapidly and may differ by location
+This data changes rapidly and might not reflect some cases still being reported. Some areas may not have data because they haven’t published their data or haven’t done so recently. Because data availability differs by location, date ranges for 14-day data may start on different dates.
+</p><br>
+<p>
+It includes confirmed and probable cases
+Total counts include both confirmed and probable cases in some locations. Probable cases are identified by public health officials and use criteria developed by government authorities.
+</p> <br>
+<p>
+It shows positive tests, which differ from positive cases
+The number of positive tests may not be equal to the number of positive cases because of reporting differences across locations. It's also common for a single person to take more than one test. This data uses reporting from polymerase chain reaction (PCR) and antigen tests.
+It’s constantly updated from resources around the world
+Data comes from Wikipedia, government health ministries, The New York Times, and other authoritative sources, as attributed.
+</p><br>
+ <p>
+It may differ from other sites and sources
+There are various sources that are tracking and aggregating coronavirus data. They update at different times and may have different ways of gathering data.
+</p>
+
+
+             </div>
+    </div>
+  </div>
+</div>
+</center>
+
+<script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+ <script src="static/js/all.min.js"></script>
+</body>
+</html>

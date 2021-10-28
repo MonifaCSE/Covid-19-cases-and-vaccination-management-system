@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+    <title>Doctor</title>
+   <style>
+
+
+
+              .d-flex{
+                     margin-top:10px;
+                     width:400px;
+                     margin-left:400px;
+                 }
+               p{
+
+                        float:left;
+                        margin-right:500px;
+                        margin-top:11px;
+                    }
+
+   </style>
+
+
+
+</head>
+<body>
+
+<div class="nr ml-auto">
+    <div class="nav-right">
+         <p>Doctor List</p>
+  <a href="/rhome">Home</a>
+  <a href="/rdoctor">Doctor</a>
+  <div class="dp">
+    <button class="dropbtn">Bed </button>
+    <div class="dc">
+      <a href="/rbed">Bed List</a>
+      <a href="/rbedallotment">Bed Allotment</a>
+
+    </div>
+  </div>
+
+    <div class="dp">
+    <button class="dropbtn">Patient </button>
+    <div class="dc">
+      <a href="/rpatient">Patient List</a>
+      <a href="/rpayment">Payments</a>
+    </div>
+  </div>
+
+
+    <div class="dp">
+    <button class="dropbtn">Vaccine </button>
+    <div class="dc">
+      <a href="/rdoze1">Doze 1</a>
+      <a href="/rdoze2">Doze 2</a>
+      <a href="/rvaccinated">Vaccinated</a>
+    </div>
+  </div>
+
+     <div class="dp">
+    <button class="dropbtn">Receptionist </button>
+    <div class="dc">
+      <a href="/rprofile">Profile</a>
+      <a href="/">Logout</a>
+
+    </div>
+  </div>
+    </div>
+</div>
+
+
+
+<form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+
+<br>
+<div class="container">
+        <div class="row">
+            <div class="col md-2">
+
+
+      <div class="table-responsive-sm">
+             <table class="table table-sm thead-light table-hover table-striped">
+             <tr>
+
+               <th>Doctor_id</th>
+                 <th>Doctor_name</th>
+                 <th>Address</th>
+               <th>Email</th>
+                 <th>Phone</th>
+                 <th>Shift</th>
+                 <th>Status</th>
+                 <th>Image</th>
+
+                 <th>Action</th>
+
+
+           </tr>
+
+              <tr>
+                    <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                   <td><img src="/static/" alt="" border=3 height=40 width=40 ></td>
+
+
+                  <td>
+
+                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+
+
+                  </td>
+
+
+              </tr>
+
+             </table>
+           </div>
+
+
+
+
+
+
+   <!--Doctor Edit-->
+
+
+             <div id="modaledit" class="modal fade" role="dialog">
+
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please Update Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form    action="" method="POST"   enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="Doctor_id" value="">
+                           </div>
+
+                           <div class="row">
+                          <div class="form-group col">
+                                    Shift:
+                                    <select class="custom-select col"   name="Shift">
+                                      <option selected>Shift</option>
+                                        <option>Day</option>
+                                         <option>Night</option>
+                                    </select></div>
+
+                                <div class="form-group col">
+                                    Status:
+                                    <select class="custom-select col"   name="status">
+                                      <option selected>Status</option>
+                                        <option>Active</option>
+                                         <option>Inactive</option>
+                                    </select></div><br><br>
+                            </div>
+
+
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+
+
+
+
+
+</div>
+        </div>
+ </div>
+
+
+
+
+  <script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/all.min.js"></script>
+
+</body>
+</html>

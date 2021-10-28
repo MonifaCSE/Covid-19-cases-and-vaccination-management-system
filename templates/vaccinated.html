@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+
+    <title>Vaccinated</title>
+</head>
+<style>
+
+
+                 .d-flex{
+                     margin-top:10px;
+                     width:400px;
+                     margin-left:400px;
+                 }
+                 p{
+                        float:left;
+                        margin-right:300px;
+                        margin-top:11px;
+                    }
+</style>
+
+<body>
+
+
+<div class="nr ml-auto">
+    <div class="nav-right">
+             <p>Vaccinated</p>
+        <a href="/ahome">Home</a>
+  <div class="dp">
+    <button class="dropbtn">Doctor
+
+    </button>
+    <div class="dc">
+      <a href="/adoctor">Doctor List</a>
+      <a href="/dsalary">Salary</a>
+    </div>
+  </div>
+
+    <div class="dp">
+    <button class="dropbtn">Bed</button>
+    <div class="dc">
+      <a href="/abed">Bed List</a>
+      <a href="/abedallotment">Bed Allotment</a>
+        <a href="/abedrequest">Bed Request</a>
+    </div>
+  </div>
+
+        <div class="dp">
+    <button class="dropbtn">Patient</button>
+    <div class="dc">
+      <a href="/apatient">Patient List</a>
+      <a href="/apayment">Payment</a>
+    </div>
+  </div>
+
+         <div class="dp">
+    <button class="dropbtn">Receptionist</button>
+    <div class="dc">
+      <a href="/areceptionist">Receptionist List</a>
+      <a href="/rsalary">Salary</a>
+    </div>
+  </div>
+
+
+    <div class="dp">
+    <button class="dropbtn">Vaccine</button>
+    <div class="dc">
+      <a href="/adoze1">Doze 1</a>
+      <a href="/adoze2">Doze 2</a>
+      <a href="/vaccinated">Vaccinated</a>
+    </div>
+  </div>
+
+     <div class="dp">
+    <button class="dropbtn">Admin</button>
+    <div class="dc">
+      <a href="/adminprofile">Profile</a>
+      <a href="/">Logout</a>
+
+    </div>
+  </div>
+
+
+
+    </div>
+</div>
+
+
+
+  <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col md-2"><br>
+
+
+      <div class="table-responsive-sm">
+             <table class="table table-sm thead-light table-bordered table-hover table-striped">
+             <tr>
+
+               <th>ID</th>
+                 <th>Name</th>
+                 <th>Address</th>
+                 <th>NID</th>
+                 <th>Phone</th>
+                 <th>Age Group</th>
+                 <th>Center</th>
+                 <th>Allergies</th>
+                <th>Ailments</th>
+                 <th>Appointment1</th>
+                 <th>Doze1</th>
+                 <th>Appointment2</th>
+                  <th>Doze2</th>
+                 <th>Vaccinated</th>
+                <th>Action</th>
+
+           </tr>
+
+              <tr>
+                    <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                     <td>ddd</td>
+                   <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                     <td>ddd</td>
+                      <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                  <td>ddd</td>
+                  <td>ddd</td>
+
+
+                   <td>
+
+                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                  </td>
+
+
+              </tr>
+
+             </table>
+           </div>
+
+
+
+
+
+
+            </div>
+        </div>
+</div>
+
+
+      <script src="static/js/jQuery.js"></script>
+       <script src="static/js/bootstrap.min.js"></script>
+       <script src="static/js/all.min.js"></script>
+</body>
+</html>

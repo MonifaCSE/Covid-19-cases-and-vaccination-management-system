@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+
+    <title>Hospital Request</title>
+
+<style>
+body {
+
+	              background: #757F9A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #D7DDE8, #757F9A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+          }
+
+                .ts{
+                    margin-top:60px;
+                }
+              p{
+                        float:left;
+                        margin-right:500px;
+                        margin-top:11px;
+                    }
+
+   </style>
+
+
+
+</head>
+<body>
+
+
+
+
+     <div class="nr ml-auto">
+    <div class="nav-right">
+         <p>Hospital Request</p>
+        <a  href="/shome">Home</a>
+
+        <a  href="/shospital">Hospital</a>
+
+
+        <a  href="/hospitalrequest">Hospital Request</a>
+
+
+
+
+      <div class="dp">
+       <button class="dropbtn">Profile
+
+       </button>
+      <div class="dc">
+      <a href="/sprofile">Profile</a>
+      <a href="/">Logout</a>
+
+      </div>
+     </div>
+
+
+    </div>
+    </div>
+
+
+
+
+   <div class="container">
+        <div class="row">
+            <div class="col md-2">
+
+           <div class="ts table-responsive-sm">
+             <table class="table table-sm text-light table-bordered table-hover table-stripped ">
+             <tr>
+
+               <th>Hospital_id</th>
+                 <th>Hospital_name</th>
+                 <th>District</th>
+               <th>Address</th>
+               <th>Email</th>
+                 <th>Password</th>
+                 <th>Phone</th>
+                 <th>Image</th>
+
+                 <th>Action</th>
+
+
+           </tr>
+
+              <tr>
+                    <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                    <td>ddd</td>
+                    <td>sss</td>
+                    <td>sss</td>
+                  <td>sss</td>
+                  <td>sss</td>
+
+                  <td>
+                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Accept</a>
+
+                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Reject</a>
+                  </td>
+
+
+              </tr>
+
+             </table>
+           </div>
+
+
+
+   <!--Hospital Edit-->
+
+
+             <div id="modaledit" class="modal fade" role="dialog">
+
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please Update Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form    action="" method="POST"   enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="Apartment_no" value="">
+                           </div>
+
+                           <div class="form-group">
+                               Hospital Name:
+                               <input type="text"   class="form-control" name="Hospital_name"  value=" ">
+                           </div>
+
+
+
+                           <div class="form-group">
+                                   District:
+                               <input type="text"   class="form-control" name="District"  value=" ">
+                           </div>
+
+
+
+                           <div class="form-group">
+                                Address:
+                               <input type="text"   class="form-control" name="Address" value=" " >
+                           </div>
+
+                            <div class="form-group">
+                                Email:
+                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value=" " >
+                           </div>
+
+                            <div class="form-group">
+                                Password:
+                               <input type="password"   class="form-control" name="Password" value="" >
+                           </div>
+
+                           <div class="form-group">
+                                Phone:
+                               <input type="text"   class="form-control" name="Phone" value=" " >
+                           </div>
+
+
+
+                            <div class="form-group">
+                                <label id="fileu1">Hospital</label>
+                                   <div class="form-group">
+                                     <input type="hidden" class="form-control"  name="file11" value=" " >
+                                  </div>
+                                <input type="file"   class="form-control" name="file1">
+                           </div><br><br>
+
+
+
+
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Accept</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+            </div>
+        </div>
+   </div>
+
+      <script src="static/js/jQuery.js"></script>
+       <script src="static/js/bootstrap.min.js"></script>
+       <script src="static/js/all.min.js"></script>
+</body>
+</html>

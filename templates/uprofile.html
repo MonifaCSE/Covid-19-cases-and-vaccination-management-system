@@ -1,0 +1,86 @@
+ <!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+    <title>User Profile</title>
+      <style>
+
+                ul li a:hover
+                  {
+                      background-color: white;
+                      color: black;
+                      border-radius: 5px 5px;
+                 }
+                 .im{
+                     margin-left:120px;
+                 }
+              p{
+                        float:left;
+                        margin-right:500px;
+                        margin-top:11px;
+                    }
+
+      </style>
+
+
+
+  </head>
+  <body>
+  <div class="nr ml-auto fixed-top">
+    <div class="nav-right">
+        <p>Your Profile</p>
+        <a  href="/uhome">Home</a>
+
+        <a  data-toggle="modal" data-target="#mymodal">Vaccine Registration</a>
+        <a   href="/ubed">Bed</a>
+        <a href="/uprofile">Profile</a>
+      <a href="/">Logout</a>
+
+      </div>
+     </div>
+
+
+
+    <br><br><br>
+
+    <div class="container" style="margin:auto;max-width:400px">
+        <div class="row">
+            <div class="col-md-12">
+        <div class="content-section">
+
+        <div class="media">
+            <img class="im rounded-circle account-img" src="{{ url_for('static', filename='image/sicon2.jpg')}}" height="150" width="150">
+            <div class="media-body">
+          <h2 class="account-heading"> </h2>
+          <p class="text-secondary"> </p>
+        </div>
+      </div>
+        </div>
+                 <div class="card">
+          <div class="card-body">
+
+              <label >Fullname : </label><br>
+              <label >Emailadd  :  </label><br>
+              <label >Password  : </label><br>
+
+
+          </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+ <script src="static/js/all.min.js"></script>
+  </body>
+</html>

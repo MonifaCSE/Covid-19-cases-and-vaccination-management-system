@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+  <title>Bed Allotment</title>
+   <style>
+
+
+        .bg-i{
+              background:skyblue;
+              }
+        .d-flex{
+                     margin-top:10px;
+                     width:400px;
+                     margin-left:400px;
+                 }
+                  p{
+
+                        float:left;
+                        margin-right:500px;
+                        margin-top:11px;
+                    }
+
+   </style>
+
+
+
+</head>
+<body>
+
+<div class="nr ml-auto">
+    <div class="nav-right">
+         <p>Bed Allotment</p>
+  <a href="/rhome">Home</a>
+  <a href="/rdoctor">Doctor</a>
+  <div class="dp">
+    <button class="dropbtn">Bed </button>
+    <div class="dc">
+      <a href="/rbed">Bed List</a>
+      <a href="/rbedallotment">Bed Allotment</a>
+
+    </div>
+  </div>
+
+    <div class="dp">
+    <button class="dropbtn">Patient </button>
+    <div class="dc">
+      <a href="/rpatient">Patient List</a>
+      <a href="/rpayment">Payments</a>
+    </div>
+  </div>
+
+
+    <div class="dp">
+    <button class="dropbtn">Vaccine </button>
+    <div class="dc">
+      <a href="/rdoze1">Doze 1</a>
+      <a href="/rdoze2">Doze 2</a>
+      <a href="/rvaccinated">Vaccinated</a>
+    </div>
+  </div>
+
+     <div class="dp">
+    <button class="dropbtn">Receptionist </button>
+    <div class="dc">
+      <a href="/rprofile">Profile</a>
+      <a href="/">Logout</a>
+
+    </div>
+  </div>
+    </div>
+</div>
+
+
+
+ <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+
+ <div class="container">
+        <div class="row">
+            <div class="col md-2">
+
+                <button type="button" style="margin:5px;" class=" btn btn-primary float-right" data-toggle="modal" data-target="#mymodal">Add Allotment</button><br>
+
+
+      <div class="table-responsive-sm">
+             <table class="table table-sm thead-light table-hover table-striped">
+             <tr>
+
+                 <th>Allotment_no</th>
+                 <th>Patient_id</th>
+
+                <th>Bed_id</th>
+
+                 <th>Allotment Date</th>
+                 <th>Discharge Date</th>
+                 <th>Action</th>
+
+
+           </tr>
+
+              <tr>
+                    <td>sss</td>
+                    <td>sss</td>
+                    <td>ddd</td>
+                    <td>sss</td>
+                    <td>sss</td>
+
+                  <td>
+
+                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+
+                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                  </td>
+
+
+              </tr>
+
+             </table>
+           </div>
+
+
+
+
+
+
+   <!--Bed Edit-->
+
+
+             <div id="modaledit" class="modal fade" role="dialog">
+
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please Update Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form    action="" method="POST"   enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="Allotment_no" value="">
+                           </div>
+
+                           <div class="form-group">
+                               Patient ID:
+                                 <input type="number" class="form-control"  name="Patient_id" value="">
+                           </div>
+
+                           <div class="form-group">
+                               Bed ID:
+                                 <input type="number" class="form-control"  name="Bed_id" value="">
+                           </div>
+
+
+
+                           <div class="form-group">
+                               Allotment Date:
+                                 <input type="datetime-local" class="form-control"  name="Allotment_date" value="">
+                           </div>
+
+                           <div class="form-group">
+                               Discharge Date:
+                                 <input type="datetime-local" class="form-control"  name="Discharge_date" value="">
+                           </div>
+
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+                       </form>
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+
+
+
+  <!--Add Bed-->
+
+
+
+  <div id="mymodal" class="modal fade" role="dialog">
+
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please insert Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form  action="" method="POST"  enctype="multipart/form-data">
+
+
+                         <div class="form-group">
+                               Patient ID:
+                                 <input type="number" class="form-control"  name="Patient_id" required="1">
+                           </div>
+
+                           <div class="form-group">
+                               Bed ID:
+                                 <input type="number" class="form-control"  name="Bed_id" required="1">
+                           </div>
+
+
+
+                           <div class="form-group">
+                               Allotment Date:
+                                 <input type="datetime-local" class="form-control"  name="Allotment_date" required="1">
+                           </div>
+
+                           <div class="form-group">
+                               Discharge Date:
+                                 <input type="datetime-local" class="form-control"  name="Discharge_date" required="1">
+                           </div>
+
+
+                           <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Insert</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+                         <!-- Preview-->
+                         <div id='preview'></div>
+</div>
+
+
+               </div>
+           </div>
+       </div>
+
+
+</div>
+        </div>
+ </div>
+
+
+
+
+
+  <script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/all.min.js"></script>
+
+</body>
+</html>

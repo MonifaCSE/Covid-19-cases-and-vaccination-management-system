@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/estyle.css')}}">
+    <title>Title</title>
+    <style>
+
+     nav{
+              background:skyblue;
+              }
+
+             p{
+                        font-size:20px;
+                        float:left;
+                        margin-right:600px;
+                        margin-top:11px;
+                    }
+
+    </style>
+</head>
+<body>
+<center>
+<nav>
+
+    <div class="nr ml-auto">
+
+    <div class="nav-right">
+        <p>Services</p>
+        <a  href="/">Home</a>
+
+        <a   href="/about">About</a>
+
+        <a  href="/portfolio">Portfolio</a>
+
+        <a  href="/services">Services</a>
+
+        <div class="dp">
+       <button class="dropbtn">Login
+
+       </button>
+      <div class="dc">
+      <a href="/alogin">Superadmin</a>
+      <a href="/alogin">Admin</a>
+      <a href="/rlogin">Receptionist</a>
+        <a href="/ulogin">User</a>
+      </div>
+     </div>
+     <a class="nav-link text-dark" href="/contact">Contact</a>
+
+    </div>
+    </div>
+   </nav>
+
+
+
+    <h4><i>Here is the Prtfolio Of Our COVID-19 services</i></h4>
+    <img src="{{ url_for('static', filename='image/h6.jpg')}} "    height="250" width="250">
+     <img src="{{ url_for('static', filename='image/h7.jpg')}} "   height="250" width="250">
+     <img src="{{ url_for('static', filename='image/h9.jpg')}} "   height="250" width="250">
+  <img src="{{ url_for('static', filename='image/h5.jpg')}} "   height="250" width="250">
+      <img src="{{ url_for('static', filename='image/h4.jpeg')}} "   height="250" width="250">
+      <img src="{{ url_for('static', filename='image/h12.jpg')}} "   height="250" width="250">
+      <img src="{{ url_for('static', filename='image/h10.jpg')}} "   height="250" width="250">
+      <img src="{{ url_for('static', filename='image/h11.jpg')}} "   height="250" width="250">
+    <img src="{{ url_for('static', filename='image/h1.jpg')}} "   height="250" width="250">
+    <img src="{{ url_for('static', filename='image/h2.jpg')}} "   height="250" width="250">
+    <img src="{{ url_for('static', filename='image/h3.jpg')}} "   height="250" width="250">
+     <img src="{{ url_for('static', filename='image/h8.jpg')}} "   height="250" width="250">
+
+</center>
+
+<script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+ <script src="static/js/all.min.js"></script>
+
+</body>
+</html>
