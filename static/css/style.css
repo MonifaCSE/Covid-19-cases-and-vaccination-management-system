@@ -11,7 +11,6 @@
   margin-top:180px;
 }
 
-  /* Navbar container */
 .nr{
   overflow: hidden;
   background-color: skyblue;
@@ -19,30 +18,28 @@
 }
 
 
-/* Right-aligned section inside the top navigation */
 .nav-right {
   float: right;
   margin-right: 90px;
 }
 
 
-/* Links inside the navbar */
 .nr a {
   float: left;
   font-size: 16px;
   color: black;
-  text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  text-align: center;
 }
 
-/* The dropdown container */
+
 .dp {
   float: left;
   overflow: hidden;
 }
 
-/* Dropdown button */
+
 .dp .dropbtn {
   font-size: 16px;
   border: none;
@@ -54,7 +51,7 @@
   margin-right: 0px; /* Important for vertical align on mobile phones */
 }
 
-/* Add a red background color to navbar links on hover */
+
 .nr a:hover, .dp:hover .dropbtn {
   background-color: white;
 
@@ -63,15 +60,13 @@
 
 /* Dropdown content (hidden by default) */
 .dc {
-  display: none;
+  display:none;
   position: absolute;
-  background-color:  skyblue;
+  background-color: skyblue;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
 }
 
-/* Links inside the dropdown */
+
 .dc a {
   float: none;
   color: black;
@@ -81,9 +76,8 @@
   text-align: left;
 }
 
-/* Add a grey background color to dropdown links on hover */
 .dc a:hover {
-  background-color: #ddd;
+  background-color: lightgray;
 }
 
 /* Show the dropdown menu on hover */
