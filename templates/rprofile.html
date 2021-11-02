@@ -12,7 +12,7 @@
 <style>
 
 
-                     .im{
+                     .imm{
                      margin-left:120px;
                  }
               p{
@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<div class="nr ml-auto">
+<div class="nr">
     <div class="nav-right">
          <p>Your Profile</p>
   <a href="/rhome">Home</a>
@@ -75,18 +75,9 @@
 <br>
 
     <div class="container" style="margin:auto;max-width:400px">
-        <div class="row">
-            <div class="col-md-12">
-        <div class="content-section">
 
-        <div class="media">
-            <img class="im rounded-circle account-img" src="{{ url_for('static', filename='image/sicon2.jpg')}}" height="150" width="150">
-            <div class="media-body">
-          <h2 class="account-heading"> </h2>
-          <p class="text-secondary"> </p>
-        </div>
-      </div>
-        </div>
+            <img class="imm" src="{{ url_for('static', filename='image/sicon2.jpg')}}" height="150" width="150">
+
                  <div class="card">
           <div class="card-body">
 
@@ -98,9 +89,6 @@
           </div>
                  </div>
             </div>
-        </div>
-    </div>
-
 
       <script src="static/js/jQuery.js"></script>
        <script src="static/js/bootstrap.min.js"></script>
