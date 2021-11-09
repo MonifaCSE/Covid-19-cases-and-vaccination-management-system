@@ -22,9 +22,14 @@ def service():
 def contact():
     return render_template('contact.html')
 
+@app.route('/slogin')
+def slogin():
+    return render_template('slogin.html')
+
 @app.route('/alogin')
 def alogin():
     return render_template('alogin.html')
+
 @app.route('/rlogin')
 def rlogin():
     return render_template('rlogin.html')
@@ -68,6 +73,11 @@ def abed():
 @app.route('/apatient')
 def apatient():
     return render_template('apatient.html')
+
+@app.route('/acovid')
+def acovid():
+    return render_template('acovid.html')
+
 @app.route('/areceptionist')
 def areceptionist():
     return render_template('areceptionist.html')
