@@ -1,10 +1,21 @@
-from flask import Flask,render_template
+from flask import Flask,render_template,request,redirect,flash,session
+from werkzeug.utils import secure_filename
+
+
+import mysql.connector
+import os
 
 app=Flask(__name__)
+app.secret_key = os.urandom(24)
+app.config['UPLOAD_FOLDER'] = 'static/upload/'
+
+conn=mysql.connector.connect(host="localhost",user="root",password="",database="covid management")
+cursor=conn.cursor()
+
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+     return render_template('home.html')
 
 @app.route('/about')
 def about():
@@ -22,9 +33,7 @@ def service():
 def contact():
     return render_template('contact.html')
 
-@app.route('/slogin')
-def slogin():
-    return render_template('slogin.html')
+
 
 @app.route('/alogin')
 def alogin():
@@ -45,9 +54,7 @@ def services():
 @app.route('/rhome')
 def rhome():
     return render_template('rhome.html')
-@app.route('/shome')
-def shome():
-    return render_template('shome.html')
+
 
 @app.route('/ahome')
 def ahome():
@@ -141,6 +148,50 @@ def ubed():
 @app.route('/uprofile')
 def uprofile():
     return render_template('uprofile.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('id')
+    return redirect('/')
+
+
+#..............................Superadmin panel............................................
+
+@app.route('/slogin')
+def slogin():
+    if 'id' in session:
+        return redirect('/shome')
+    else:
+        return render_template('slogin.html')
+
+
+@app.route('/shome')
+def shome():
+    if 'id' in session:
+        return render_template('shome.html')
+    else:
+        return redirect('/')
+
+@app.route('/login_validation', methods=['POST'])
+def login_validation():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    cursor.execute(
+        """SELECT * FROM `superadmin` WHERE `Email` LIKE '{}' AND `Password` LIKE '{}'"""
+        .format(email, password))
+    sadmin = cursor.fetchall()
+
+    if (sadmin):
+        if len(sadmin) > 0:
+            session['id'] = sadmin[0][0]
+            return redirect('/shome')
+
+    return redirect('/')
+
+
+
+
+
 
 if __name__=="__main__":
     app.run(debug=True)
