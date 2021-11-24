@@ -62,9 +62,7 @@ def ahome():
 @app.route('/uhome')
 def uhome():
     return render_template('uhome.html')
-@app.route('/shospital')
-def shospital():
-    return render_template('shospital.html')
+
 @app.route('/hospitalrequest')
 def hospitalrequest():
     return render_template('hospitalrequest.html')
@@ -157,6 +155,8 @@ def logout():
 
 #..............................Superadmin panel............................................
 
+#..................superadmin login........
+
 @app.route('/slogin')
 def slogin():
     if 'id' in session:
@@ -188,7 +188,96 @@ def login_validation():
 
     return redirect('/')
 
+#........hospital registration.................
 
+@app.route('/shospital')
+def shospital():
+    if 'id' in session:
+         cursor.execute("SELECT* FROM `hospital`")
+         myshospital=cursor.fetchall()
+         return  render_template('shospital.html',shospital=myshospital)
+    else:
+        return redirect('/')
+
+
+@app.route('/view_image', methods=['GET', 'POST'])
+def view_image():
+        return redirect('/shospital')
+
+@app.route('/insert', methods=['POST'])
+def insert():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            hospitalname = request.form['Hospital_name']
+            district = request.form['District']
+            address = request.form['Address']
+            email = request.form['Email']
+            password = request.form['Password']
+            phone = request.form['Phone']
+
+            file1 = request.files['file1']
+            filename1 = secure_filename(file1.filename)
+            file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+
+            cursor.execute(
+                "INSERT INTO HOSPITAL (Hospital_name,District,Address,Email,Password,Phone,image) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                (hospitalname,district,address,email,password,phone,filename1))
+            conn.commit()
+            return redirect('/shospital')
+
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+        if request.method == "POST":
+
+            hospitalid = request.form['Hospital_id']
+            hospitalname = request.form['Hospital_name']
+            district = request.form['District']
+            address = request.form['Address']
+            email = request.form['Email']
+            password = request.form['Password']
+            phone = request.form['Phone']
+
+            file1 = request.files['file1']
+            filename1 = secure_filename(file1.filename)
+            if filename1 == '':
+                filename1 = request.form['file11']
+            else:
+                file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+
+
+            cursor.execute("""UPDATE hospital 
+            SET  Hospital_name=%s, District=%s ,Address=%s ,Email=%s ,Password=%s ,Phone=%s ,image=%s WHERE Hospital_id=%s""", (hospitalname, district, address,email,password,phone,filename1,hospitalid))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/shospital')
+
+@app.route('/deletee/<string:hospitalid>', methods=['POST', 'GET'])
+def delete(hospitalid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM hospital WHERE Hospital_id=%s", (hospitalid,))
+        conn.commit()
+        return redirect('/shospital')
+
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == "POST":
+
+        hospital = request.form['Hospital']
+        cursor.execute("SELECT * FROM hospital WHERE Hospital_name LIKE %s OR District LIKE %s OR Address LIKE %s", (hospital,hospital,hospital))
+        myhospital = cursor.fetchall()
+
+        if (len(myhospital) == 0 and hospital == 'all') or len(hospital)==0:
+            cursor.execute("SELECT * FROM hospital")
+
+            myhospital = cursor.fetchall()
+        return render_template('shospital.html', shospital=myhospital)
+    return redirect('/shospital')
 
 
 

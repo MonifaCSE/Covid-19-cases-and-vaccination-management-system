@@ -69,8 +69,8 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
 
 
 
-  <form class="d-flex m-auto w-80">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+  <form class="d-flex m-auto w-80" method="post" action="/search" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Hospital">
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
 
@@ -78,7 +78,19 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
  <div class="container">
 
    <button type="button" style="margin:5px;" class=" btn btn-dark float-right" data-toggle="modal" data-target="#mymodal">Add Hospital</button>  <br>
+          {%with messages = get_flashed_messages() %}
+             {%if messages%}
+             {%for message in messages%}
+             <div class="alert alert-success alert-dismissable w-75" role="alert">
+                  <button type="button" class="close " data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">x</span>
+                  </button>
+                  {{message}}
+              </div>
 
+             {%endfor%}
+             {%endif%}
+             {%endwith%}
            <div class="table-responsive-sm">
              <table class="table table-sm table-hover table-dark table-bordered  table-stripped">
              <tr>
@@ -96,37 +108,36 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
 
 
            </tr>
-
+               {%for data in shospital%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                   <td><img src="/static/" alt="" border=3 height=40 width=40 ></td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+                   <td><img src="/static/upload/{{data.7}}" alt="" border=3 height=40 width=40 ></td>
 
 
                   <td>
-                       <a href="" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalview">View</a>
+                       <a href="/view_image/{{data.0}}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalview{{data.0}}">View</a>
 
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                       <a href="/update/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                       <a href="/deletee/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
                   </td>
 
 
               </tr>
 
-             </table>
-           </div>
+
 
     <!--Hospital View-->
 
 
-    <div id="modalview" class="modal fade" role="dialog">
+    <div id="modalview{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog modal-lg">
                <div class="modal-content">
@@ -139,7 +150,7 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
 
                            <div>
                                 <label>Hospital</label>
-                                <img src=" " alt="" border=3 height=700 width=750 >
+                                <img src="/static/upload/{{data.7}}" alt="" border=3 height=700 width=750 >
                             </div><br>
 
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -165,7 +176,7 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
    <!--Hospital Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -175,44 +186,44 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="update" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Hospital_id" value="">
+                                 <input type="hidden" class="form-control"  name="Hospital_id" value="{{data.0}}">
                            </div>
 
                            <div class="form-group">
                                Hospital Name:
-                               <input type="text"   class="form-control" name="Hospital_name"  value=" ">
+                               <input type="text"   class="form-control" name="Hospital_name"  value="{{data.1}}">
                            </div>
 
 
 
                            <div class="form-group">
                                    District:
-                               <input type="text"   class="form-control" name="District"  value=" ">
+                               <input type="text"   class="form-control" name="District"  value="{{data.2}}">
                            </div>
 
 
 
                            <div class="form-group">
                                 Address:
-                               <input type="text"   class="form-control" name="Address" value=" " >
+                               <input type="text"   class="form-control" name="Address" value="{{data.3}}" >
                            </div>
 
                             <div class="form-group">
                                 Email:
-                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value=" " >
+                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value="{{data.4}}" >
                            </div>
 
                             <div class="form-group">
                                 Password:
-                               <input type="password"   class="form-control" name="Password" value="" >
+                               <input type="password"   class="form-control" name="Password" value="{{data.5}}" >
                            </div>
 
                            <div class="form-group">
                                 Phone:
-                               <input type="tel"   class="form-control" name="Phone" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" value=" " >
+                               <input type="tel"   class="form-control" name="Phone" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" value="{{data.6}}" >
                            </div>
 
 
@@ -220,7 +231,7 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
                             <div class="form-group">
                                 <label id="fileu1">Hospital</label>
                                    <div class="form-group">
-                                     <input type="hidden" class="form-control"  name="file11" value=" " >
+                                     <input type="hidden" class="form-control"  name="file11" value="{{data.7}}" >
                                   </div>
                                 <input type="file"   class="form-control" name="file1">
                            </div><br><br>
@@ -242,7 +253,11 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
 
                </div>
            </div>
-       </div>
+             </div>
+                 {%endfor%}
+             </table>
+           </div>
+
 
 
 
@@ -261,7 +276,7 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insert" method="POST"  enctype="multipart/form-data">
                            <div class="form-group">
 
                                <input type="text" placeholder="Hospital_name" class="form-control" name="Hospital_name" required="1">
@@ -271,6 +286,11 @@ background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, F
                            <div class="form-group">
 
                                <input type="text" placeholder="District" class="form-control" name="District" required="1">
+                           </div>
+
+                           <div class="form-group">
+
+                               <input type="text"  placeholder="Address" class="form-control" name="Address" required="1">
                            </div>
 
                            <div class="form-group">
