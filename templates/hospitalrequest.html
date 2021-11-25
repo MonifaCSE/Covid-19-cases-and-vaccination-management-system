@@ -68,11 +68,11 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
 
 
 
-   <div class="container">
+   <div class="container"><br>
            {%with messages = get_flashed_messages() %}
              {%if messages%}
              {%for message in messages%}
-             <div class="alert alert-success alert-dismissable w-75" role="alert">
+             <div class="alert alert-success alert-dismissable" role="alert">
                   <button type="button" class="close " data-dismiss="alert" aria-label="close">
                       <span aria-hidden="true">x</span>
                   </button>
@@ -84,6 +84,7 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
              {%endwith%}
            <div class="ts table-responsive-sm">
              <table class="table table-sm text-light table-bordered table-hover table-stripped ">
+
              <tr>
 
                <th>Request_id</th>
@@ -94,82 +95,83 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
                  <th>Password</th>
                  <th>Phone</th>
                  <th>Image</th>
-
+                 <th>Approval</th>
                  <th>Action</th>
 
 
            </tr>
-
+              {%for data in hospitalrequest%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>sss</td>
-                    <td>sss</td>
-                  <td>sss</td>
-                  <td>sss</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+                   <td><img src="/static/upload/{{data.7}}" alt="" border=3 height=40 width=40 ></td>
+                   <td>{{data.8}}</td>
 
                   <td>
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Accept</a>
+                       <a href="/approver/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Accept</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Reject</a>
+                       <a href="/deleter/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Reject?')">Reject</a>
                   </td>
 
 
               </tr>
 
-   <!--Hospital Edit-->
+   <!--Hospital Approval-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
                    <div class="modal-header">
-                        <h6 class="modal-title">Please Update Data</h6>
+                        <h6 class="modal-title">Please Approve Data</h6>
                        <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="approver" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Request_id" value="">
+                                 <input type="hidden" class="form-control"  name="Request_id" value="{{data.0}}">
                            </div>
 
                            <div class="form-group">
                                Hospital Name:
-                               <input type="text"   class="form-control" name="Hospital_name"  value=" ">
+                               <input type="text"   class="form-control" name="Hospital_name"  value="{{data.1}}">
                            </div>
 
 
 
                            <div class="form-group">
                                    District:
-                               <input type="text"   class="form-control" name="District"  value=" ">
+                               <input type="text"   class="form-control" name="District"  value="{{data.2}}">
                            </div>
 
 
 
                            <div class="form-group">
                                 Address:
-                               <input type="text"   class="form-control" name="Address" value=" " >
+                               <input type="text"   class="form-control" name="Address" value="{{data.3}}" >
                            </div>
 
                             <div class="form-group">
                                 Email:
-                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value=" " >
+                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value="{{data.4}}" >
                            </div>
 
                             <div class="form-group">
                                 Password:
-                               <input type="password"   class="form-control" name="Password" value="" >
+                               <input type="password"   class="form-control" name="Password" value="{{data.5}}" >
                            </div>
 
                            <div class="form-group">
                                 Phone:
-                               <input type="text"   class="form-control" name="Phone" value=" " >
+                               <input type="text"   class="form-control" name="Phone" value="{{data.6}}" >
                            </div>
 
 
@@ -177,7 +179,7 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
                             <div class="form-group">
                                 <label id="fileu1">Hospital</label>
                                    <div class="form-group">
-                                     <input type="hidden" class="form-control"  name="file11" value=" " >
+                                     <input type="hidden" class="form-control"  name="file11" value="{{data.7}}" >
                                   </div>
                                 <input type="file"   class="form-control" name="file1">
                            </div><br><br>
@@ -200,7 +202,7 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
                </div>
            </div>
        </div>
-{%endfor%}
+            {%endfor%}
              </table>
            </div>
 

@@ -63,12 +63,6 @@ def ahome():
 def uhome():
     return render_template('uhome.html')
 
-@app.route('/hospitalrequest')
-def hospitalrequest():
-    return render_template('hospitalrequest.html')
-@app.route('/sprofile')
-def sprofile():
-    return render_template('sprofile.html')
 @app.route('/adoctor')
 def adoctor():
     return render_template('adoctor.html')
@@ -280,6 +274,125 @@ def search():
     return redirect('/shospital')
 
 
+
+#.............Hospital Request.............
+
+
+
+
+@app.route('/hospitalrequest')
+def hospitalrequest():
+    if 'id' in session:
+         cursor.execute("SELECT* FROM `hospital_request`")
+         hospitalr=cursor.fetchall()
+         return render_template('hospitalrequest.html',hospitalrequest=hospitalr)
+    else:
+        return redirect('/')
+
+
+
+@app.route('/insertr', methods=['POST'])
+def insertr():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            hospitalname = request.form['Hospital_name']
+            district = request.form['District']
+            address = request.form['Address']
+            email = request.form['Email']
+            password = request.form['Password']
+            phone = request.form['Phone']
+
+            file1 = request.files['file1']
+            filename1 = secure_filename(file1.filename)
+            file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+
+            cursor.execute(
+                "INSERT INTO HOSPITAL_REQUEST (Hospital_name,District,Address,Email,Password,Phone,image) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                (hospitalname,district,address,email,password,phone,filename1))
+
+            conn.commit()
+            return redirect('/hospitalrequest')
+
+@app.route('/approver', methods=['POST'])
+def approver():
+        if request.method == "POST":
+
+            requestid = request.form['Request_id']
+            hospitalname = request.form['Hospital_name']
+            district = request.form['District']
+            address = request.form['Address']
+            email = request.form['Email']
+            password = request.form['Password']
+            phone = request.form['Phone']
+
+            file1 = request.files['file1']
+            filename1 = secure_filename(file1.filename)
+            if filename1 == '':
+                filename1 = request.form['file11']
+            else:
+                file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+            cursor.execute(
+                "INSERT INTO HOSPITAL (Hospital_name,District,Address,Email,Password,Phone,image) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                (hospitalname, district, address, email, password, phone, filename1))
+            cursor.execute("""UPDATE hospital_request 
+                                    SET  Hospital_name=%s, District=%s ,Address=%s ,Email=%s ,Password=%s ,Phone=%s ,image=%s ,Approval="Approved" WHERE Request_id=%s""",
+                           (hospitalname, district, address, email, password, phone, filename1, requestid))
+
+            flash("Accepted")
+            conn.commit()
+
+            return redirect('/hospitalrequest')
+
+@app.route('/deleter/<string:requestid>', methods=['POST', 'GET'])
+def deleter(requestid):
+        flash("Request has been Rejected")
+
+        cursor.execute("""UPDATE hospital_request  SET  Approval="Rejected" WHERE Request_id=%s""",(requestid,))
+
+        conn.commit()
+        return redirect('/hospitalrequest')
+
+
+#.....................................superadmin profile............
+
+@app.route('/sprofile')
+def sprofile():
+    if 'id' in session:
+       s=session['id']
+       cursor.execute("SELECT * FROM superadmin WHERE id = '"+str(s)+"'")
+       p = cursor.fetchone()
+
+       return render_template('sprofile.html', p=p)
+
+    else:
+        return redirect('/')
+
+
+@app.route('/seprofile', methods=['POST', 'GET'])
+def seprofile():
+    if request.method == "POST":
+
+        id = request.form['id']
+        email = request.form['Email']
+        password = request.form['Password']
+        phone = request.form['Phone']
+
+        file1 = request.files['file1']
+        filename1 = secure_filename(file1.filename)
+        if filename1 == '':
+            filename1 = request.form['file11']
+        else:
+            file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+        cursor.execute("""UPDATE superadmin 
+        SET   Email=%s ,Password=%s ,Phone=%s ,image=%s WHERE  id=%s""",
+                       (email, password, phone, filename1, id))
+        flash("Data Updated Successfully")
+        conn.commit()
+
+        return redirect('/sprofile')
 
 
 if __name__=="__main__":
