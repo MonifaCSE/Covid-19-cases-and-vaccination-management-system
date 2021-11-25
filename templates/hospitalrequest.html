@@ -69,7 +69,19 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
 
 
    <div class="container">
+           {%with messages = get_flashed_messages() %}
+             {%if messages%}
+             {%for message in messages%}
+             <div class="alert alert-success alert-dismissable w-75" role="alert">
+                  <button type="button" class="close " data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">x</span>
+                  </button>
+                  {{message}}
+              </div>
 
+             {%endfor%}
+             {%endif%}
+             {%endwith%}
            <div class="ts table-responsive-sm">
              <table class="table table-sm text-light table-bordered table-hover table-stripped ">
              <tr>
@@ -106,11 +118,6 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
 
 
               </tr>
-
-             </table>
-           </div>
-
-
 
    <!--Hospital Edit-->
 
@@ -193,7 +200,9 @@ background: linear-gradient(to right, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, F
                </div>
            </div>
        </div>
-
+{%endfor%}
+             </table>
+           </div>
 
 
    </div>

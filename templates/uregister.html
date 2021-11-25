@@ -41,7 +41,19 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-i">
   <div class="container">
+        {%with messages = get_flashed_messages() %}
+             {%if messages%}
+             {%for message in messages%}
+             <div class="alert alert-success alert-dismissable w-75" role="alert">
+                  <button type="button" class="close " data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">x</span>
+                  </button>
+                  {{message}}
+              </div>
 
+             {%endfor%}
+             {%endif%}
+             {%endwith%}
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
        <h4 class="text-dark" style="font-size:20px">User Registration Form</h4>
     <ul class="navbar-nav ml-auto">
