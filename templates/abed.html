@@ -98,8 +98,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+ <form class="d-flex m-auto w-80" method="post" action="/searchb" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Bed">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -135,19 +135,21 @@
 
            </tr>
 
+              {%for data in abed%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+
 
 
                   <td>
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                      <a href="/updateb/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+                       <a href="/deleteb/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+             </td>
 
 
               </tr>
@@ -162,7 +164,7 @@
    <!--Bed Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -172,10 +174,13 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updateb" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Bed_id" value="">
+                                 <input type="hidden" class="form-control"  name="Bed_id" value="{{data.0}}">
+                           </div>
+                           <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="Bedcat" value="{{data.1}}">
                            </div>
                            Bed category:<br>
                            <select class="custom-select"   name="Bed_category">
@@ -189,11 +194,14 @@
 
                            <div class="form-group">
                                 Cost:
-                                 <input type="number" class="form-control"  name="Cost" value="">
+                                 <input type="number" class="form-control"  name="Cost" value="{{data.2}}">
                            </div>
 
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="stat" value="{{data.3}}">
+                           </div>
                                Status:
-                               <select class="custom-select"   name="status">
+                               <select class="custom-select"   name="Status">
                                       <option selected>Status</option>
                                         <option>Available</option>
                                          <option>Not Available</option>
@@ -236,7 +244,7 @@
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertb" method="POST"  enctype="multipart/form-data">
 
 
                          Bed category:<br>
@@ -255,7 +263,7 @@
                            </div>
 
                              Status:
-                               <select class="custom-select"   name="status">
+                               <select class="custom-select"   name="Status">
                                       <option selected>Status</option>
                                         <option>Available</option>
                                          <option>Not Available</option>

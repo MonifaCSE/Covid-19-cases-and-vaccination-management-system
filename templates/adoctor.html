@@ -96,8 +96,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+  <form class="d-flex m-auto w-80" method="post" action="/searchd" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Doctor">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -136,24 +136,28 @@
 
 
            </tr>
-
+             {%for data in adoctor%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                   <td><img src="/static/" alt="" border=3 height=40 width=40 ></td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+
+                   <td><img src="/static//upload/{{data.7}}" alt="" border=3 height=40 width=40 ></td>
 
 
                   <td>
 
-                       <a href="" class="btn btn-warning" data-toggle="modal" data-target="#modaledit">Edit</a>
+                       <a href="/view_doctor/{{data.0}}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalview{{data.0}}">View</a>
 
-                       <a href="" class="btn btn-danger" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+
+                       <a href="/updated/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
+
+                       <a href="/deleted/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+               </td>
 
 
               </tr>
@@ -162,10 +166,47 @@
 
 
 
+    <!--Image View-->
+
+
+    <div id="modalview{{data.0}}" class="modal fade" role="dialog">
+
+           <div class="modal-dialog modal-sm">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">View Doctor</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+
+                           <div>
+                                <label>Doctor</label><br>
+                                <img src="/static/upload/{{data.7}}" alt="" border=3 height=300 width=260 >
+                            </div><br>
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+
+
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+
+
+
+
+
    <!--Doctor Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -175,48 +216,56 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updated" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Doctor_id" value="">
+                                 <input type="hidden" class="form-control"  name="Doctor_id" value="{{data.0}}">
                            </div>
                            <div class="row">
                            <div class="form-group col">
                                Doctor Name:
-                               <input type="text"   class="form-control" name="Doctor_name"  value=" ">
+                               <input type="text"   class="form-control" name="Doctor_name"  value="{{data.1}}">
                            </div>
 
 
                            <div class="form-group col">
                                 Address:
-                               <input type="text"   class="form-control" name="Address" value=" " >
+                               <input type="text"   class="form-control" name="Address" value="{{data.2}}" >
                            </div>
                            </div>
 
                             <div class="row">
                            <div class="form-group col">
                                 Email:
-                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value=" " >
+                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value="{{data.3}}" >
                            </div>
 
                            <div class="form-group col">
                                 Phone:
-                               <input type="tel"   class="form-control" name="Phone"  pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" value=" " >
+                               <input type="tel"   class="form-control" name="Phone"  pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" value="{{data.4}}" >
                            </div>
                             </div>
 
                             <div class="row">
+
+                                <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="shif" value="{{data.5}}" >
+                                </div>
                           <div class="form-group col">
-                                    Shift:
+                                 Shift:
                                     <select class="custom-select col"   name="Shift">
                                       <option selected>Shift</option>
                                         <option>Day</option>
                                          <option>Night</option>
                                     </select></div>
 
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control"  name="stat" value="{{data.6}}" >
+                                </div>
                                 <div class="form-group col">
+
                                     Status:
-                                    <select class="custom-select col"   name="status">
+                                    <select class="custom-select col"   name="Status">
                                       <option selected>Status</option>
                                         <option>Active</option>
                                          <option>Inactive</option>
@@ -226,7 +275,7 @@
                             <div class="form-group">
                                 <label id="fileu1">Doctor Image</label>
                                    <div class="form-group">
-                                     <input type="hidden" class="form-control"  name="file11" value=" " >
+                                     <input type="hidden" class="form-control"  name="file11" value="{{data.7}}" >
                                   </div>
                                 <input type="file"   class="form-control" name="file1">
                            </div>
@@ -266,12 +315,16 @@
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertd" method="POST"  enctype="multipart/form-data">
                            <div class="form-group">
 
                                <input type="text" placeholder="Doctor_name" class="form-control" name="Doctor_name" required="1">
                            </div>
 
+                           <div class="form-group">
+
+                               <input type="text" placeholder="Address"  class="form-control" name="Address" required="1" >
+                           </div>
                            <div class="form-group">
 
                                <input type="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="Email" required="1">

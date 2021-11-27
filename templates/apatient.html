@@ -133,22 +133,19 @@
 
 
            </tr>
-
+{%for data in apatient%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-
-
-
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
 
                   <td>
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                       <a href="/updated/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+                       <a href="/deleted/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+             </td>
 
 
               </tr>
@@ -159,7 +156,7 @@
    <!--Patient Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog modal-xl">
                <div class="modal-content">
@@ -169,7 +166,7 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updatep" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group ">
                                  <input type="hidden" class="form-control"  name="Patient_id" value="">
@@ -294,7 +291,7 @@
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertp" method="POST"  enctype="multipart/form-data">
                             <div class="row">
                             <div class="form-group col">
                                 Patients Name:
@@ -311,12 +308,12 @@
                           <div class="row">
                             <div class="form-group col">
                                 Relatives Name:
-                                <input type="text"   class="form-control"   name="Patient_name"  required="1">
+                                <input type="text"   class="form-control"   name="Relative_name"  required="1">
                            </div>
 
                            <div class="form-group col">
                                Relatives Phone:
-                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone"  value=" ">
+                               <input type="tel"   class="form-control"   name="Relative_Phone"  value=" ">
                            </div>
 
                            </div>
@@ -352,7 +349,7 @@
                             <div class="form-group col">
                                Condition:
 
-                                <select class="custom-select"   name="Bed_category">
+                                <select class="custom-select"   name="Condition">
                                       <option selected>Condition</option>
                                         <option>Critical</option>
                                          <option>Recovered</option>
@@ -376,20 +373,20 @@
                                 <div class="col">
                                <label>Common</label>
                                 <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="" id="fever">
+                               <input class="form-check-input" type="checkbox" value="Symtoms" id="fever">
                                    <label class="form-check-label" for="fever">
                                    Fever
                                       </label>
                                 </div>
                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="drycough">
+                                <input class="form-check-input" type="checkbox" value="Symtoms" id="drycough">
                                  <label class="form-check-label" for="drycough">
                                    Dry Cough
                                    </label>
                             </div>
 
                                  <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="tiredness" >
+                                <input class="form-check-input" type="checkbox" value="Symtoms" id="tiredness" >
                                  <label class="form-check-label" for="tiredness">
                                    Tiredness
                                    </label>
@@ -400,20 +397,20 @@
                                <div class="col">
                                     <label>Less Common</label>
                                 <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="" id="aches">
+                               <input class="form-check-input" type="checkbox" value="Symtoms" id="aches">
                                    <label class="form-check-label" for="aches">
                                    Aches and Pains
                                       </label>
                                 </div>
                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="sorethroat">
+                                <input class="form-check-input" type="checkbox" value="Symtoms" id="sorethroat">
                                  <label class="form-check-label" for="sorethroat">
                                    Sore throat
                                    </label>
                             </div>
 
                                  <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="diarrhoea">
+                                <input class="form-check-input" type="checkbox" value="Symtoms" id="diarrhoea">
                                  <label class="form-check-label" for="diarrhoea">
                                    Diarrhoea
                                    </label>
@@ -423,13 +420,13 @@
                                <div class="col">
                                       <label>Serious</label>
                                 <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="" id="breath">
+                               <input class="form-check-input" type="checkbox" value="Symtoms" id="breath">
                                    <label class="form-check-label" for="breath">
                                    Breathing Problem
                                       </label>
                                 </div>
                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="chest">
+                                <input class="form-check-input" type="checkbox" value="Symtoms" id="chest">
                                  <label class="form-check-label" for="chest">
                                    Chest Pain
                                    </label>

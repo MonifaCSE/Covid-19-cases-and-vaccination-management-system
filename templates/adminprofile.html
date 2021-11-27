@@ -10,16 +10,27 @@
 
     <style>
 
-                 .im{
-                     margin-left:120px;
+                  body {
+
+	                background: #8e9eab;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+          }
+
+
+               .account-img{
+                     margin-left:115px;
                  }
 
-               p{
-
+             p{
                         float:left;
-                        margin-right:300px;
+                        margin-right:500px;
                         margin-top:11px;
                     }
+             h6{
+                margin-left:100px;
+             }
 </style>
 
 <body>
@@ -91,34 +102,98 @@
 
 
 
-<br><br><br>
+   <div class="container" style="margin:auto;max-width:400px">
+             {%with messages = get_flashed_messages() %}
+             {%if messages%}
+             {%for message in messages%}
+             <div class="alert alert-success alert-dismissable w-75" role="alert">
+                  <button type="button" class="close " data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">x</span>
+                  </button>
+                  {{message}}
+              </div>
 
-    <div class="container" style="margin:auto;max-width:400px">
-        <div class="row">
-            <div class="col-md-12">
+             {%endfor%}
+             {%endif%}
+             {%endwith%}
         <div class="content-section">
-
         <div class="media">
-            <img class="im rounded-circle account-img" src="{{ url_for('static', filename='image/sicon2.jpg')}}" height="150" width="150">
-            <div class="media-body">
-          <h2 class="account-heading"> </h2>
-          <p class="text-secondary"> </p>
-        </div>
+            <img class="rounded-circle account-img" src="/static/upload/{{p.7}}" height="150" width="150">
       </div>
+            <h6>{{p.1}}</h6>
         </div>
-                 <div class="card">
+
+        <div class="card">
           <div class="card-body">
 
-              <label >Fullname :Admin </label><br>
-              <label >Emailadd  :  </label><br>
-              <label >Password  : </label><br>
+              <form    action="aprofile" method="POST"   enctype="multipart/form-data">
 
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="id" value="{{p.0}}">
+                           </div>
+
+                            <div class="form-group">
+
+                               <input type="email"   class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="Email" value="{{p.4}}" >
+                           </div>
+
+
+
+
+                            <div class="form-group">
+
+                               <input type="password"   class="form-control" name="Password"   id="myInput" value="{{p.5}}">
+                                <input type="checkbox" onclick="myFunction()" style="margin-left:200px;">Show Password
+                           </div>
+
+
+
+                           <div class="form-group">
+
+                               <input type="text"   class="form-control" name="Phone" value="{{p.6}}" >
+                           </div>
+
+
+                            <div class="form-group">
+
+                                   <div class="form-group">
+                                     <input type="hidden" class="form-control"  name="file11" value="{{p.7}}" >
+                                  </div>
+                                <input type="file"   class="form-control" name="file1">
+                           </div>
+
+
+
+
+                            <div class="form-group">
+                              <button class="btn btn-primary btn-lg btn-block" type="submit">Edit</button>
+
+                           </div>
+
+
+
+                       </form>
+
+
+              <script>
+
+                  function myFunction() {
+                   var x = document.getElementById("myInput");
+                    if (x.type === "password")
+                             {
+                               x.type = "text";
+                              }
+                    else
+                           {
+                              x.type = "password";
+                            }
+                           }
+              </script>
 
           </div>
                  </div>
             </div>
-        </div>
-    </div>
+
 
  <script src="static/js/jQuery.js"></script>
        <script src="static/js/bootstrap.min.js"></script>
