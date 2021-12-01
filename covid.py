@@ -60,28 +60,19 @@ def uhome():
 def acovid():
     return render_template('acovid.html')
 
-@app.route('/areceptionist')
-def areceptionist():
-    return render_template('areceptionist.html')
+
 @app.route('/dsalary')
 def dsalary():
     return render_template('dsalary.html')
 @app.route('/rsalary')
 def rsalary():
     return render_template('rsalary.html')
-@app.route('/abedallotment')
-def abedallotment():
-    return render_template('abedallotment.html')
+
 @app.route('/abedrequest')
 def abedrequest():
     return render_template('abedrequest.html')
-@app.route('/apayment')
-def apayment():
-    return render_template('apayment.html')
 
-@app.route('/adoze1')
-def adoze1():
-    return render_template('adoze1.html')
+
 @app.route('/adoze2')
 def adoze2():
     return render_template('adoze2.html')
@@ -626,7 +617,7 @@ def updateb():
 def deleteb(bedid):
         flash("Record has been deleted successfully")
 
-        cursor.execute("DELETE FROM doctor WHERE Doctor_id=%s", (bedid,))
+        cursor.execute("DELETE FROM bed_list WHERE Bed_id=%s", (bedid,))
         conn.commit()
         return redirect('/abed')
 
@@ -648,6 +639,78 @@ def searchb():
     return redirect('/abed')
 
 
+#.......................bed allotment.......................
+
+
+@app.route('/abedallotment')
+def abedallotment():
+    if 'Hospital_id' in session:
+         s = session['Hospital_id']
+         cursor.execute("SELECT* FROM `bed_allotment` WHERE Hospital_id = '" + str(s) + "'")
+         abedallotment=cursor.fetchall()
+         return  render_template('abedallotment.html',abedallotment=abedallotment)
+    else:
+        return redirect('/')
+
+
+
+@app.route('/insertba', methods=['POST'])
+def insertba():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+
+            patientid = request.form['Patient_id']
+            bedid = request.form['Bed_id']
+            allotmentdate = request.form['Allotment_date']
+            dischargedate=request.form['Discharge_date']
+            hospitalid=session['Hospital_id']
+
+            cursor.execute("INSERT INTO bed_allotment (Patient_id,Bed_id,Allotment_date,Discharge_date,Hospital_id) VALUES (%s,%s,%s,%s,%s)",
+                (patientid,bedid,allotmentdate,dischargedate,hospitalid))
+            conn.commit()
+        return redirect('/abedallotment')
+
+@app.route('/updateba', methods=['GET', 'POST'])
+def updateba():
+        if request.method == "POST":
+            allotid=request.form['Allotment_no']
+            patientid = request.form['Patient_id']
+            bedid = request.form['Bed_id']
+            allotmentdate = request.form['Allotment_date']
+            dischargedate = request.form['Discharge_date']
+            cursor.execute("""UPDATE bed_allotment 
+            SET  Patient_id=%s,Bed_id=%s,Allotment_date=%s,Discharge_date=%s  WHERE Allotment_no=%s""", (patientid,bedid,allotmentdate,dischargedate,allotid))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/abedallotment')
+
+@app.route('/deleteba/<string:allotid>', methods=['POST', 'GET'])
+def deleteba(allotid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM bed_allotment WHERE Allotment_no=%s", (allotid,))
+        conn.commit()
+        return redirect('/abedallotment')
+
+
+
+@app.route('/searchba', methods=['GET', 'POST'])
+def searchba():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        allot = request.form['allot']
+        cursor.execute("SELECT * FROM bed_allotment WHERE (Patient_id LIKE %s OR Bed_id LIKE %s OR Allotment_date LIKE %s OR Discharge_date LIKE %s) and Hospital_id='"+str(s)+"'", (allot,allot,allot,allot))
+        abedallotment = cursor.fetchall()
+
+        if (len(abedallotment) == 0 and allot == 'all') or len(allot)==0:
+            cursor.execute("SELECT * FROM bed_allotment WHERE Hospital_id='"+str(s)+"'")
+
+            abedallotment = cursor.fetchall()
+        return render_template('abedallotment.html',abedallotment=abedallotment)
+    return redirect('/abedallotment')
+
+
 
 
 #............................Add Patients.............................
@@ -658,7 +721,7 @@ def searchb():
 def apatient():
     if 'Hospital_id' in session:
          s = session['Hospital_id']
-         cursor.execute("SELECT PATIENT_ID,PATIENT_NAME,BED_ID,PCONDITION FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
+         cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          apatient=cursor.fetchall()
          return  render_template('apatient.html',apatient=apatient)
     else:
@@ -669,6 +732,7 @@ def apatient():
 def insertp():
         if request.method == "POST":
             flash("Data Inserted Successfully")
+            hospitalid=session['Hospital_id']
             patientname = request.form['Patient_name']
             phone = request.form['Phone']
             relativename=request.form['Relative_name']
@@ -679,49 +743,34 @@ def insertp():
             bedno = request.form['Bed_id']
             condition = request.form['Condition']
             dname = request.form['Doctor_name']
-            symptom=request.form['Symptoms']
-            hospitalid=session['Hospital_id']
 
             cursor.execute(
-                "INSERT INTO PATIENT (Patient_name,Phone,Relative_name,Relative_Phone,Address,Ailment,Date,Bed_id,Pcondition,Doctor_name,Symptoms,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (patientname,phone,relativename,rphone,address,pailments,date,bedno,condition,dname,symptom,hospitalid))
+                "INSERT INTO PATIENT (Patient_name,Phone,Relative_name,Relative_Phone,Address,Ailment,Date,Bed_id,Pcondition,Doctor_name,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (patientname,phone,relativename,rphone,address,pailments,date,bedno,condition,dname,hospitalid))
             conn.commit()
             return redirect('/apatient')
 
 @app.route('/updatep', methods=['GET', 'POST'])
 def updatep():
         if request.method == "POST":
-
-            doctorid = request.form['Doctor_id']
-            doctorname = request.form['Doctor_name']
-            address = request.form['Address']
-            email = request.form['Email']
-
+            patientid=request.form['Patient_id']
+            patientname = request.form['Patient_name']
             phone = request.form['Phone']
-
-            shift = request.form['Shift']
-            if shift == 'Shift':
-                shift = request.form['shif']
+            relativename = request.form['Relative_name']
+            rphone = request.form['Relative_Phone']
+            address = request.form['Address']
+            pailments = request.form['ailment']
+            date = request.form['date']
+            bedno = request.form['Bed_id']
+            condition = request.form['Condition']
+            if condition == 'Condition':
+                condition = request.form['con']
             else:
-                shift = request.form['Shift']
-
-            status = request.form['Status']
-            if status == 'Status':
-                status = request.form['stat']
-            else:
-                status = request.form['Status']
-
-            file1 = request.files['file1']
-            filename1 = secure_filename(file1.filename)
-            if filename1 == '':
-                filename1 = request.form['file11']
-            else:
-                file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
-
-
+                condition = request.form['Condition']
+            dname = request.form['Doctor_name']
 
             cursor.execute("""UPDATE patient 
-            SET  Doctor_name=%s,Address=%s,Email=%s,Phone=%s,Shift=%s,Status=%s,image=%s WHERE Doctor_id=%s""", (doctorname,address,email,phone,shift,status,filename1,doctorid))
+            SET  Patient_name=%s,Phone=%s,Relative_name=%s,Relative_Phone=%s,Address=%s,Ailment=%s,Date=%s,Bed_id=%s,Pcondition=%s,Doctor_name=%s WHERE Patient_id=%s""", (patientname,phone,relativename,rphone,address,pailments,date,bedno,condition,dname,patientid))
             flash("Data Updated Successfully")
             conn.commit()
 
@@ -742,7 +791,7 @@ def searchp():
     if request.method == "POST" and  'Hospital_id' in session:
         s = session['Hospital_id']
         patient = request.form['Patient']
-        cursor.execute("SELECT * FROM patient WHERE (Doctor_name LIKE %s OR Address LIKE %s OR Shift LIKE %s OR Status LIKE %s) and Hospital_id='"+str(s)+"'", (patient,patient,patient))
+        cursor.execute("SELECT * FROM patient WHERE (Patient_name LIKE %s OR Bed_id LIKE %s OR Pcondition LIKE %s) and Hospital_id='"+str(s)+"'", (patient,patient,patient))
         apatient = cursor.fetchall()
 
         if (len(apatient) == 0 and patient == 'all') or len(patient)==0:
@@ -751,6 +800,298 @@ def searchp():
             apatient = cursor.fetchall()
         return render_template('apatient.html', apatient=apatient)
     return redirect('/apatient')
+
+
+
+#............................Add Patients Payment.............................
+
+
+
+@app.route('/apayment')
+def apayment():
+    if 'Hospital_id' in session:
+         s = session['Hospital_id']
+         cursor.execute("SELECT* FROM `patient_payment` WHERE Hospital_id = '" + str(s) + "'")
+         apayment=cursor.fetchall()
+         return  render_template('apayment.html',apayment=apayment)
+    else:
+        return redirect('/')
+
+
+@app.route('/insertpp', methods=['POST'])
+def insertpp():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            hospitalid=session['Hospital_id']
+            patientid = request.form['Patient_id']
+            patientname = request.form['Patient_name']
+            totalamount = request.form['Total_amount']
+            deposit=request.form['Deposit']
+            dueamount = request.form['Due_amount']
+
+            cursor.execute(
+                "INSERT INTO PATIENT_PAYMENT (Patient_id,Patient_name,Total_amount,Deposit,Due_amount,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s)",
+                (patientid,patientname,totalamount,deposit,dueamount,hospitalid))
+            conn.commit()
+            return redirect('/apayment')
+
+@app.route('/updatepp', methods=['GET', 'POST'])
+def updatepp():
+        if request.method == "POST":
+
+            paymentno = request.form['Payment_no']
+            patientid=request.form['Patient_id']
+            patientname = request.form['Patient_name']
+            totalamount = request.form['Total_amount']
+            deposit = request.form['Deposit']
+            dueamount = request.form['Due_amount']
+
+            cursor.execute("""UPDATE patient_payment 
+            SET  Patient_id=%s,Patient_name=%s,Total_amount=%s,Deposit=%s,Due_amount=%s  WHERE Payment_no=%s""", (patientid,patientname,totalamount,deposit,dueamount,paymentno))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/apayment')
+
+@app.route('/deletepp/<string:paymentid>', methods=['POST', 'GET'])
+def deletepp(paymentid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM patient_payment WHERE Payment_no=%s", (paymentid,))
+        conn.commit()
+        return redirect('/apayment')
+
+
+
+@app.route('/searchpp', methods=['GET', 'POST'])
+def searchpp():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        payment = request.form['Payment']
+        cursor.execute("SELECT * FROM patient_payment WHERE (Patient_id LIKE %s OR Patient_name LIKE %s) and Hospital_id='"+str(s)+"'", (payment,payment))
+        apayment = cursor.fetchall()
+
+        if (len(apayment) == 0 and payment == 'all') or len(payment)==0:
+            cursor.execute("SELECT * FROM patient_payment WHERE Hospital_id='"+str(s)+"'")
+
+            apayment = cursor.fetchall()
+        return render_template('apayment.html',apayment=apayment)
+    return redirect('/apayment')
+
+
+#.........................Add Receptionist.................................
+
+@app.route('/areceptionist')
+def areceptionist():
+    if 'Hospital_id' in session:
+         s = session['Hospital_id']
+         cursor.execute("SELECT* FROM `receptionist` WHERE Hospital_id = '" + str(s) + "'")
+         areceptionist=cursor.fetchall()
+         return  render_template('areceptionist.html',areceptionist=areceptionist)
+    else:
+        return redirect('/')
+
+
+@app.route('/view_receptionist', methods=['GET', 'POST'])
+def view_receptionist():
+        return redirect('/areceptionist')
+
+@app.route('/insertre', methods=['POST'])
+def insertre():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            receptionistname = request.form['Receptionist_name']
+            address = request.form['Address']
+            email = request.form['Email']
+            password=request.form['Password']
+            phone = request.form['Phone']
+            shift = request.form['Shift']
+            status = request.form['Status']
+            file1 = request.files['file1']
+            filename1 = secure_filename(file1.filename)
+            file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+            hospitalid=session['Hospital_id']
+
+            cursor.execute(
+                "INSERT INTO RECEPTIONIST (Receptionist_name,Address,Email,Password,Phone,Shift,Status,image,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (receptionistname,address,email,password,phone,shift,status,filename1,hospitalid))
+            conn.commit()
+            return redirect('/areceptionist')
+
+@app.route('/updatere', methods=['GET', 'POST'])
+def updatedre():
+        if request.method == "POST":
+
+            receptionistid = request.form['Receptionist_id']
+            receptionistname = request.form['Receptionist_name']
+            address = request.form['Address']
+            email = request.form['Email']
+            password = request.form['Password']
+            phone = request.form['Phone']
+
+            shift = request.form['Shift']
+            if shift == 'Shift':
+                shift = request.form['shif']
+            else:
+                shift = request.form['Shift']
+
+            status = request.form['Status']
+            if status == 'Status':
+                status = request.form['stat']
+            else:
+                status = request.form['Status']
+
+            file1 = request.files['file1']
+            filename1 = secure_filename(file1.filename)
+            if filename1 == '':
+                filename1 = request.form['file11']
+            else:
+                file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+            cursor.execute("""UPDATE receptionist 
+            SET  Receptionist_name=%s,Address=%s,Email=%s,Password=%s,Phone=%s,Shift=%s,Status=%s,image=%s WHERE Receptionist_id=%s""", (receptionistname,address,email,password,phone,shift,status,filename1,receptionistid))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/areceptionist')
+
+@app.route('/deletere/<string:receptionistid>', methods=['POST', 'GET'])
+def deletere(receptionistid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM receptionist WHERE Receptionist_id=%s", (receptionistid,))
+        conn.commit()
+        return redirect('/areceptionist')
+
+
+
+@app.route('/searchre', methods=['GET', 'POST'])
+def searchre():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        receptionist = request.form['Receptionist']
+        cursor.execute("SELECT * FROM receptionist WHERE (Receptionist_name LIKE %s OR Address LIKE %s OR Shift LIKE %s OR Status LIKE %s) and Hospital_id='"+str(s)+"'", (receptionist,receptionist,receptionist,receptionist))
+        areceptionist = cursor.fetchall()
+
+        if (len(areceptionist) == 0 and receptionist == 'all') or len(receptionist)==0:
+            cursor.execute("SELECT * FROM receptionist WHERE Hospital_id='"+str(s)+"'")
+
+            areceptionist = cursor.fetchall()
+        return render_template('areceptionist.html', areceptionist=areceptionist)
+    return redirect('/areceptionist')
+
+
+
+#...................Add Doze 1........................
+
+
+@app.route('/adoze1')
+def adoze1():
+    if 'Hospital_id' in session:
+         cursor.execute("SELECT* FROM `doze1`")
+         adoze1=cursor.fetchall()
+         return  render_template('adoze1.html',adoze1=adoze1)
+    else:
+        return redirect('/')
+
+
+@app.route('/insertdoze1', methods=['POST'])
+def insertdoze1():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            name = request.form['Name']
+            address = request.form['Address']
+            nid = request.form['nid']
+            phone = request.form['Phone']
+            agegroup = request.form['Age_group']
+            allergies = request.form['Allergies']
+            ailments = request.form['Ailments']
+            doze = request.form['Doze']
+            appointment=request.form['Date']
+
+            doze1 = request.form['Doze1']
+
+            hospitalid=session['Hospital_id']
+
+            cursor.execute(
+                "INSERT INTO DOZE1 (Name,Address,NID,Phone_number,Age_group,Allergies,Prior_ailments,Doze_name,Appointment_date,Doze1,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (name,address,nid,phone,agegroup,allergies,ailments,doze,appointment,doze1,hospitalid))
+            conn.commit()
+            return redirect('/adoze1')
+
+@app.route('/updatedoze1', methods=['GET', 'POST'])
+def updatedoze1():
+        if request.method == "POST":
+
+            id = request.form['id']
+            name = request.form['Name']
+            address = request.form['Address']
+            nid = request.form['nid']
+            phone = request.form['Phone']
+            agegroup = request.form['Age_group']
+            if agegroup == 'Age Group':
+                agegroup = request.form['age_group']
+            else:
+                agegroup = request.form['Age_group']
+
+            allergies = request.form['Allergies']
+            if allergies == 'Allergies':
+                allergies = request.form['allergies']
+            else:
+                allergies = request.form['Allergies']
+
+            ailments = request.form['Ailments']
+            if ailments == 'Prior Ailments':
+                ailments = request.form['ailments']
+            else:
+                ailments = request.form['Ailments']
+
+            doze = request.form['Doze']
+            if doze == 'Doze Name':
+                doze = request.form['doze']
+            else:
+                doze = request.form['Doze']
+
+            appointment = request.form['Date']
+
+            doze1 = request.form['Doze1']
+            if doze1 == 'Doze1':
+                doze1 = request.form['doze1']
+            else:
+                doze1 = request.form['Doze1']
+
+            cursor.execute("""UPDATE doze1
+            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment_date=%s,Doze1=%s  WHERE ID=%s""", (name,address,nid,phone,agegroup,allergies,ailments,doze,appointment,doze1,id))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/adoze1')
+
+@app.route('/deletedoze1/<string:doze1id>', methods=['POST', 'GET'])
+def deletedoze1(doze1id):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM doze1 WHERE ID=%s", (doze1id,))
+        conn.commit()
+        return redirect('/adoze1')
+
+
+
+@app.route('/searchdoze1', methods=['GET', 'POST'])
+def searchdoze1():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        doze1 = request.form['doze1']
+        cursor.execute("SELECT * FROM doze1 WHERE (Name LIKE %s  OR Address LIKE %s OR NID LIKE %s OR Doze_name LIKE %s OR Prior_ailments LIKE %s OR Allergies LIKE %s OR Appointment_date LIKE %s) and Hospital_id='" + str(s) + "'", (doze1,doze1,doze1,doze1,doze1,doze1,doze1))
+        adoze1= cursor.fetchall()
+
+        if (len(adoze1) == 0 and doze1 == 'all') or len(doze1)==0:
+            cursor.execute("SELECT * FROM doze1 WHERE Hospital_id='" + str(s) + "'")
+
+            adoze1 = cursor.fetchall()
+        return render_template('adoze1.html', adoze1=adoze1)
+    return redirect('/adoze1')
+
 
 
 
