@@ -6,7 +6,7 @@ import mysql.connector
 import os
 
 app=Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.urandom(94)
 app.config['UPLOAD_FOLDER'] = 'static/upload/'
 
 conn=mysql.connector.connect(host="localhost",user="root",password="",database="covid management")
@@ -72,13 +72,6 @@ def rsalary():
 def abedrequest():
     return render_template('abedrequest.html')
 
-
-@app.route('/adoze2')
-def adoze2():
-    return render_template('adoze2.html')
-@app.route('/vaccinated')
-def vaccinated():
-    return render_template('vaccinated.html')
 @app.route('/rdoctor')
 def rdoctor():
     return render_template('rdoctor.html')
@@ -988,9 +981,10 @@ def searchre():
 @app.route('/adoze1')
 def adoze1():
     if 'Hospital_id' in session:
-         cursor.execute("SELECT* FROM `doze1`")
-         adoze1=cursor.fetchall()
-         return  render_template('adoze1.html',adoze1=adoze1)
+        s = session['Hospital_id']
+        cursor.execute("SELECT* FROM `doze1` WHERE Hospital_id = '" + str(s) + "'")
+        adoze1=cursor.fetchall()
+        return  render_template('adoze1.html',adoze1=adoze1)
     else:
         return redirect('/')
 
@@ -1008,14 +1002,11 @@ def insertdoze1():
             ailments = request.form['Ailments']
             doze = request.form['Doze']
             appointment=request.form['Date']
-
-            doze1 = request.form['Doze1']
-
             hospitalid=session['Hospital_id']
 
             cursor.execute(
-                "INSERT INTO DOZE1 (Name,Address,NID,Phone_number,Age_group,Allergies,Prior_ailments,Doze_name,Appointment_date,Doze1,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (name,address,nid,phone,agegroup,allergies,ailments,doze,appointment,doze1,hospitalid))
+                "INSERT INTO DOZE1 (Name,Address,NID,Phone_number,Age_group,Allergies,Prior_ailments,Doze_name,Appointment_date,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (name,address,nid,phone,agegroup,allergies,ailments,doze,appointment,hospitalid))
             conn.commit()
             return redirect('/adoze1')
 
@@ -1059,13 +1050,45 @@ def updatedoze1():
                 doze1 = request.form['doze1']
             else:
                 doze1 = request.form['Doze1']
+            hospitalid = session['Hospital_id']
 
-            cursor.execute("""UPDATE doze1
-            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment_date=%s,Doze1=%s  WHERE ID=%s""", (name,address,nid,phone,agegroup,allergies,ailments,doze,appointment,doze1,id))
-            flash("Data Updated Successfully")
-            conn.commit()
+            id1 = request.form.get('id')
+            cursor.execute(
+                """SELECT * FROM `doze2` WHERE `id` LIKE '{}'"""
+                    .format(id1))
+            duau = cursor.fetchall()
+
+            if (duau):
+                cursor.execute("""UPDATE doze1
+                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment_date=%s,Doze1=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1, id))
+
+                conn.commit()
+
+                cursor.execute("""UPDATE doze2
+                                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment1=%s,Doze1=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1, id))
+                flash("Data Updated Successfully")
+                conn.commit()
+
+            else:
+                cursor.execute("""UPDATE doze1
+                                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment_date=%s,Doze1=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1, id))
+                flash("Data Updated and Added to Doze2 Successfully")
+                conn.commit()
+
+                cursor.execute(
+                    "INSERT INTO DOZE2 (id,Name,Address,NID,Phone_number,Age_group,Allergies,Prior_ailments,Doze_name,Appointment1,Doze1,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                    (id,name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1, hospitalid))
+                conn.commit()
+
+
+
 
             return redirect('/adoze1')
+
+
 
 @app.route('/deletedoze1/<string:doze1id>', methods=['POST', 'GET'])
 def deletedoze1(doze1id):
@@ -1082,7 +1105,7 @@ def searchdoze1():
     if request.method == "POST" and  'Hospital_id' in session:
         s = session['Hospital_id']
         doze1 = request.form['doze1']
-        cursor.execute("SELECT * FROM doze1 WHERE (Name LIKE %s  OR Address LIKE %s OR NID LIKE %s OR Doze_name LIKE %s OR Prior_ailments LIKE %s OR Allergies LIKE %s OR Appointment_date LIKE %s) and Hospital_id='" + str(s) + "'", (doze1,doze1,doze1,doze1,doze1,doze1,doze1))
+        cursor.execute("SELECT * FROM doze1 WHERE (Name LIKE %s  OR Address LIKE %s OR NID LIKE %s OR Doze_name LIKE %s OR Prior_ailments LIKE %s OR Allergies LIKE %s OR Appointment_date LIKE %s OR Doze1 LIKE %s) and Hospital_id='" + str(s) + "'", (doze1,doze1,doze1,doze1,doze1,doze1,doze1,doze1))
         adoze1= cursor.fetchall()
 
         if (len(adoze1) == 0 and doze1 == 'all') or len(doze1)==0:
@@ -1091,6 +1114,182 @@ def searchdoze1():
             adoze1 = cursor.fetchall()
         return render_template('adoze1.html', adoze1=adoze1)
     return redirect('/adoze1')
+
+
+
+
+#...................Add Doze 2........................
+
+
+@app.route('/adoze2')
+def adoze2():
+    if 'Hospital_id' in session:
+        s = session['Hospital_id']
+        cursor.execute("SELECT* FROM `doze2` WHERE Hospital_id = '" + str(s) + "'")
+        adoze2=cursor.fetchall()
+        return  render_template('adoze2.html',adoze2=adoze2)
+    else:
+        return redirect('/')
+
+
+@app.route('/updatedoze2', methods=['GET', 'POST'])
+def updatedoze2():
+        if request.method == "POST":
+
+            id = request.form['id']
+            name = request.form['Name']
+            address = request.form['Address']
+            nid = request.form['nid']
+            phone = request.form['Phone']
+            agegroup = request.form['Age_group']
+            if agegroup == 'Age Group':
+                agegroup = request.form['age_group']
+            else:
+                agegroup = request.form['Age_group']
+
+            allergies = request.form['Allergies']
+            if allergies == 'Allergies':
+                allergies = request.form['allergies']
+            else:
+                allergies = request.form['Allergies']
+
+            ailments = request.form['Ailments']
+            if ailments == 'Prior Ailments':
+                ailments = request.form['ailments']
+            else:
+                ailments = request.form['Ailments']
+
+            doze = request.form['Doze']
+            if doze == 'Doze Name':
+                doze = request.form['doze']
+            else:
+                doze = request.form['Doze']
+
+            appointment = request.form['Date']
+
+            doze1 = request.form['Doze1']
+            if doze1 == 'Doze1':
+                doze1 = request.form['doze1']
+            else:
+                doze1 = request.form['Doze1']
+
+            appointment2 = request.form['Date2']
+
+            doze2 = request.form['Doze2']
+            if doze2 == 'Doze2':
+                doze2 = request.form['doze2']
+            else:
+                doze2 = request.form['Doze2']
+            hospitalid = session['Hospital_id']
+            var = 'Vaccinated'
+            id1 = request.form.get('id')
+            cursor.execute(
+                """SELECT * FROM `vaccinated` WHERE `id` LIKE '{}'"""
+                    .format(id1))
+            d2uau = cursor.fetchall()
+
+            if (d2uau):
+                cursor.execute("""UPDATE doze2
+                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment1=%s,Doze1=%s,Appointment2=%s,Doze2=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1,appointment2, doze2, id))
+
+                conn.commit()
+
+                cursor.execute("""UPDATE vaccinated
+                                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment1=%s,Doze1=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1, id))
+                flash("Data Updated Successfully")
+                conn.commit()
+
+            else:
+                cursor.execute("""UPDATE doze2
+                                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment1=%s,Doze1=%s,Appointment2=%s,Doze2=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1,appointment2, doze2, id))
+
+                flash("Data Updated and Added to Vaccinated Successfully")
+                conn.commit()
+
+                cursor.execute(
+                    "INSERT INTO VACCINATED (id,Name,Address,NID,Phone_number,Age_group,Allergies,Prior_ailments,Doze_name,Appointment1,Doze1,Appointment2,Doze2,Vaccinated,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                    (id,name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1,appointment2, doze2,var, hospitalid))
+                conn.commit()
+
+
+
+
+            return redirect('/adoze2')
+
+
+
+
+@app.route('/deletedoze2/<string:doze2id>', methods=['POST', 'GET'])
+def deletedoze2(doze2id):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM doze2 WHERE ID=%s", (doze2id,))
+        conn.commit()
+        return redirect('/adoze2')
+
+
+
+@app.route('/searchdoze2', methods=['GET', 'POST'])
+def searchdoze2():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        doze2 = request.form['doze2']
+        cursor.execute("SELECT * FROM doze2 WHERE (Name LIKE %s  OR Address LIKE %s OR NID LIKE %s OR Doze_name LIKE %s OR Prior_ailments LIKE %s OR Allergies LIKE %s OR Appointment1 LIKE %s OR Doze1 LIKE %s OR Doze2 LIKE %s OR Appointment2 LIKE %s) and Hospital_id='" + str(s) + "'", (doze2,doze2,doze2,doze2,doze2,doze2,doze2,doze2,doze2,doze2))
+        adoze2= cursor.fetchall()
+
+        if (len(adoze2) == 0 and doze2 == 'all') or len(doze2)==0:
+            cursor.execute("SELECT * FROM doze2 WHERE Hospital_id='" + str(s) + "'")
+
+            adoze2 = cursor.fetchall()
+        return render_template('adoze2.html', adoze2=adoze2)
+    return redirect('/adoze2')
+
+
+
+#...................Vaccinated........................
+
+
+@app.route('/vaccinated')
+def vaccinated():
+    if 'Hospital_id' in session:
+        s = session['Hospital_id']
+        cursor.execute("SELECT* FROM `vaccinated` WHERE Hospital_id = '" + str(s) + "'")
+        vaccinated=cursor.fetchall()
+        return  render_template('vaccinated.html',vaccinated=vaccinated)
+    else:
+        return redirect('/')
+
+
+
+
+
+@app.route('/deletev/<string:vid>', methods=['POST', 'GET'])
+def deletev(vid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM vaccinated WHERE ID=%s", (vid,))
+        conn.commit()
+        return redirect('/vaccinated')
+
+
+
+@app.route('/searchv', methods=['GET', 'POST'])
+def searchv():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        vax = request.form['vax']
+        cursor.execute("SELECT * FROM vaccinated WHERE (Name LIKE %s  OR Address LIKE %s OR NID LIKE %s OR Doze_name LIKE %s OR Prior_ailments LIKE %s OR Allergies LIKE %s OR Appointment1 LIKE %s OR Doze1 LIKE %s OR Doze2 LIKE %s OR Appointment2 LIKE %s) and Hospital_id='" + str(s) + "'", (vax,vax,vax,vax,vax,vax,vax,vax,vax,vax))
+        vaccinated= cursor.fetchall()
+
+        if (len(vaccinated) == 0 and vax == 'all') or len(vax)==0:
+            cursor.execute("SELECT * FROM vaccinated WHERE Hospital_id='" + str(s) + "'")
+
+            vaccinated = cursor.fetchall()
+        return render_template('vaccinated.html', vaccinated=vaccinated)
+    return redirect('/vaccinated')
 
 
 

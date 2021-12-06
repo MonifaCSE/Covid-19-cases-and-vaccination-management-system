@@ -97,12 +97,12 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+ <form class="d-flex m-auto w-80" method="post" action="/searchv" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="vax">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
-    <div class="container">
+
          <br>
            {%with messages = get_flashed_messages() %}
              {%if messages%}
@@ -140,27 +140,27 @@
 
            </tr>
 
+             {%for data in vaccinated%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                   <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                      <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                  <td>ddd</td>
-                  <td>ddd</td>
-
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+                   <td>{{data.7}}</td>
+                    <td>{{data.8}}</td>
+                    <td>{{data.9}}</td>
+                    <td>{{data.10}}</td>
+                    <td>{{data.11}}</td>
+                    <td>{{data.12}}</td>
+                     <td>{{data.13}}</td>
 
                    <td>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+                       <a href="/deletev/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                </td>
 
 
               </tr>
@@ -169,12 +169,6 @@
              </table>
            </div>
 
-
-
-
-
-
-            </div>
 
 
       <script src="static/js/jQuery.js"></script>
