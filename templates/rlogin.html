@@ -67,13 +67,27 @@
 <div class="card">
           <div class="card-body">
 <img src="{{ url_for('static', filename='image/rlo.png')}} " class="pic">
-              <form class="form1" method="post" action="/login_validation"><br><br>
+              <form class="form1" method="post" action="/login_rec"><br><br>
 
                   <input required type="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="email"> <br><br>
-                  <input required type="password" placeholder="Password" class="form-control" name="password"><br><br>
-
+                  <input required type="password" placeholder="Password" class="form-control" name="password"id="myInput">
+                    <input type="checkbox" onclick="myFunction()" style="margin-left:180px;">Show Password<br><br>
                   <input type="submit" class="btn btn-primary btn-lg btn-block" value="Sign in">
               </form>
+              <script>
+
+                  function myFunction() {
+                   var x = document.getElementById("myInput");
+                    if (x.type === "password")
+                             {
+                               x.type = "text";
+                              }
+                    else
+                           {
+                              x.type = "password";
+                            }
+                           }
+              </script>
 
 
           </div>

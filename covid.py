@@ -34,9 +34,7 @@ def contact():
     return render_template('contact.html')
 
 
-@app.route('/rlogin')
-def rlogin():
-    return render_template('rlogin.html')
+
 @app.route('/ulogin')
 def ulogin():
     return render_template('ulogin.html')
@@ -46,9 +44,7 @@ def uregister():
 @app.route('/services')
 def services():
     return render_template('service.html')
-@app.route('/rhome')
-def rhome():
-    return render_template('rhome.html')
+
 
 @app.route('/uhome')
 def uhome():
@@ -96,9 +92,7 @@ def rdoze2():
 @app.route('/rvaccinated')
 def rvaccinated():
     return render_template('rvaccinated.html')
-@app.route('/rprofile')
-def rprofile():
-    return render_template('rprofile.html')
+
 @app.route('/ubed')
 def ubed():
     return render_template('ubed.html')
@@ -1290,6 +1284,94 @@ def searchv():
             vaccinated = cursor.fetchall()
         return render_template('vaccinated.html', vaccinated=vaccinated)
     return redirect('/vaccinated')
+
+
+
+
+#..............................Receptionist panel............................................
+
+#..................Receptionist login........
+
+
+@app.route('/rlogout')
+def rlogout():
+    session.pop('Hospital_id')
+    return redirect('/')
+
+
+@app.route('/rlogin')
+def rlogin():
+    if 'Hospital_id' in session:
+        return redirect('/rhome')
+    else:
+        return render_template('rlogin.html')
+
+@app.route('/rhome')
+def rhome():
+    if 'Hospital_id' in session:
+        s = session['Hospital_id']
+        cursor.execute("SELECT * FROM HOSPITAL WHERE Hospital_id = '" + str(s) + "'")
+        p = cursor.fetchone()
+        return render_template('rhome.html',p=p)
+    else:
+        return redirect('/')
+
+@app.route('/login_rec', methods=['POST'])
+def login_rec():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    cursor.execute(
+        """SELECT * FROM `receptionist` WHERE `Email` LIKE '{}' AND `Password` LIKE '{}'"""
+        .format(email, password))
+    rec = cursor.fetchall()
+
+    if (rec):
+        if len(rec) > 0:
+            session['Hospital_id'] = rec[0][9]
+            session['Receptionist_id']=rec[0][0]
+            return redirect('/rhome')
+
+    return redirect('/')
+
+#.....................................Receptionist profile............
+
+@app.route('/rprofile')
+def rprofile():
+    if 'Receptionist_id' in session:
+       s=session['Receptionist_id']
+       cursor.execute("SELECT * FROM RECEPTIONIST WHERE Receptionist_id = '"+str(s)+"'")
+       p = cursor.fetchone()
+
+       return render_template('rprofile.html', p=p)
+
+    else:
+        return redirect('/')
+
+
+@app.route('/recprofile', methods=['POST', 'GET'])
+def recprofile():
+    if request.method == "POST":
+
+        id = request.form['id']
+        email = request.form['Email']
+        password = request.form['Password']
+        phone = request.form['Phone']
+
+        file1 = request.files['file1']
+        filename1 = secure_filename(file1.filename)
+        if filename1 == '':
+            filename1 = request.form['file11']
+        else:
+            file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+
+        cursor.execute("""UPDATE receptionist
+        SET   Email=%s ,Password=%s ,Phone=%s ,image=%s WHERE  Receptionist_id=%s""",
+                       (email, password, phone, filename1, id))
+        flash("Data Updated Successfully")
+        conn.commit()
+
+        return redirect('/rprofile')
+
 
 
 
