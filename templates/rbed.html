@@ -67,7 +67,7 @@
     <button class="dropbtn">Receptionist </button>
     <div class="dc">
       <a href="/rprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/rlogout">Logout</a>
 
     </div>
   </div>
@@ -79,8 +79,9 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+
+ <form class="d-flex m-auto w-80" method="post" action="/searchrecb" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Bed">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -113,34 +114,29 @@
 
            </tr>
 
+             {%for data in rbed%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
 
 
                   <td>
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                       <a href="/updaterecb/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
                            </td>
 
 
               </tr>
 
-             </table>
-           </div>
-
-
-
-
 
 
    <!--Bed Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -150,15 +146,18 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updaterecb" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Bed_id" value="">
+                                 <input type="hidden" class="form-control"  name="Bed_id" value="{{data.0}}">
                            </div>
 
 
+                              <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="stat" value="{{data.3}}">
+                           </div>
                                Status:
-                               <select class="custom-select"   name="status">
+                               <select class="custom-select"   name="Status">
                                       <option selected>Status</option>
                                         <option>Available</option>
                                          <option>Not Available</option>

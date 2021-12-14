@@ -67,7 +67,7 @@
     <button class="dropbtn">Receptionist </button>
     <div class="dc">
       <a href="/rprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/rlogout">Logout</a>
 
     </div>
   </div>
@@ -81,8 +81,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+ <form class="d-flex m-auto w-80" method="post" action="/searchrecv" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="vax">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -114,6 +114,7 @@
                  <th>Age Group</th>
                  <th>Allergies</th>
                 <th>Ailments</th>
+                 <th>Doze Name</th>
                  <th>Appointment1</th>
                  <th>Doze1</th>
                  <th>Appointment2</th>
@@ -123,20 +124,22 @@
 
            </tr>
 
+              {%for data in rvaccinated%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                   <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                  <td>ddd</td>
-                  <td>ddd</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+                   <td>{{data.7}}</td>
+                    <td>{{data.8}}</td>
+                    <td>{{data.9}}</td>
+                    <td>{{data.10}}</td>
+                    <td>{{data.11}}</td>
+                    <td>{{data.12}}</td>
+                     <td>{{data.13}}</td>
 
               </tr>
 

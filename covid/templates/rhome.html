@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+    <title>Receptionists-Home</title>
+   <style>
+
+   body {
+
+	                 background-image: url({{ url_for('static', filename='image/ad2.jpg')}});
+					 background-size: cover;
+                     background-repeat:no-repeat;
+                     background-position: center;
+                     background-attachment:fixed;
+          }
+
+         .to{
+            margin-top:140px;
+         }
+           p{
+                        float:left;
+                        margin-right:470px;
+                        margin-top:11px;
+                        font-size:20px;
+                    }
+
+
+   </style>
+
+
+
+</head>
+<body>
+
+<div class="nr">
+    <img src="static/upload/{{p.7}}" height="50" width="50">
+    <div class="nav-right">
+             <p>{{p.1}}</p>
+  <a href="/rhome">Home</a>
+  <a href="/rdoctor">Doctor</a>
+  <div class="dp">
+    <button class="dropbtn">Bed </button>
+    <div class="dc">
+      <a href="/rbed">Bed List</a>
+      <a href="/rbedallotment">Bed Allotment</a>
+
+    </div>
+  </div>
+
+    <div class="dp">
+    <button class="dropbtn">Patient </button>
+    <div class="dc">
+        <a href="/acovid">Covid Test</a>
+      <a href="/rpatient">Patient List</a>
+      <a href="/rpayment">Payments</a>
+    </div>
+  </div>
+
+
+    <div class="dp">
+    <button class="dropbtn">Vaccine </button>
+    <div class="dc">
+      <a href="/rdoze1">Doze 1</a>
+      <a href="/rdoze2">Doze 2</a>
+      <a href="/rvaccinated">Vaccinated</a>
+    </div>
+  </div>
+
+     <div class="dp">
+    <button class="dropbtn">Receptionist </button>
+    <div class="dc">
+      <a href="/rprofile">Profile</a>
+      <a href="/rlogout">Logout</a>
+
+    </div>
+  </div>
+    </div>
+</div>
+
+
+   <div class="to">
+     <div class="container-fluid">
+
+        <div class="row">
+
+
+                 <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                <div class="card bg-warning shadow h-100 py-2">
+                      <div class="card-body">
+                         <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
+                                    Bed availability</div>
+                                <div class="h5 mb-0 font-weight-bold text-light">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-bed fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                 </div>
+
+
+                      <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                   <div class="card bg-danger shadow h-100  py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
+                                    Oxygen availability</div>
+                                <div class="h5 mb-0 font-weight-bold text-light">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-head-side-mask fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                     </div>
+                            </div>
+                   </div>
+
+
+
+                   <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                   <div class="card bg-primary shadow h-100  py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
+                                    Ambulance availability</div>
+                                <div class="h5 mb-0 font-weight-bold text-light">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-ambulance fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                     </div>
+                            </div>
+                   </div>
+              </div>
+
+    </div>
+
+   </div>
+
+
+  <script src="static/js/jQuery.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/all.min.js"></script>
+
+</body>
+</html>

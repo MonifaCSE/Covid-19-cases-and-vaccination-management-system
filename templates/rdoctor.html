@@ -67,7 +67,7 @@
     <button class="dropbtn">Receptionist </button>
     <div class="dc">
       <a href="/rprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/rlogout">Logout</a>
 
     </div>
   </div>
@@ -80,8 +80,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+ <form class="d-flex m-auto w-80" method="post" action="/searchrecd" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Doctor">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -119,20 +119,21 @@
 
            </tr>
 
+              {%for data in rdoctor%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                   <td><img src="/static/" alt="" border=3 height=40 width=40 ></td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
 
+                   <td><img src="/static/upload/{{data.7}}" alt="" border=3 height=40 width=40 ></td>
 
                   <td>
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                      <a href="/updaterecd/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
 
                   </td>
@@ -145,7 +146,7 @@
    <!--Doctor Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -155,24 +156,32 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updaterecd" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Doctor_id" value="">
+                                 <input type="hidden" class="form-control"  name="Doctor_id" value="{{data.0}}">
                            </div>
 
                            <div class="row">
+
+                                <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="shif" value="{{data.5}}" >
+                                </div>
                           <div class="form-group col">
-                                    Shift:
+                                 Shift:
                                     <select class="custom-select col"   name="Shift">
                                       <option selected>Shift</option>
                                         <option>Day</option>
                                          <option>Night</option>
                                     </select></div>
 
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control"  name="stat" value="{{data.6}}" >
+                                </div>
                                 <div class="form-group col">
+
                                     Status:
-                                    <select class="custom-select col"   name="status">
+                                    <select class="custom-select col"   name="Status">
                                       <option selected>Status</option>
                                         <option>Active</option>
                                          <option>Inactive</option>

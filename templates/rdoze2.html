@@ -66,7 +66,7 @@
     <button class="dropbtn">Receptionist </button>
     <div class="dc">
       <a href="/rprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/rlogout">Logout</a>
 
     </div>
   </div>
@@ -80,8 +80,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+ <form class="d-flex m-auto w-80" method="post" action="/searchrecdoze2" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="doze2">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -123,24 +123,26 @@
 
            </tr>
 
+             {%for data in rdoze2%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                   <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                      <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                  <td>ddd</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+                   <td>{{data.7}}</td>
+                    <td>{{data.8}}</td>
+                    <td>{{data.9}}</td>
+                    <td>{{data.10}}</td>
+                    <td>{{data.11}}</td>
+                    <td>{{data.12}}</td>
 
                   <td>
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                       <a href="/updaterecdoze2/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
+
 
                   </td>
 
@@ -152,7 +154,7 @@
    <!--Doze2 Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -162,33 +164,144 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updaterecdoze2" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="id" value="">
+                                 <input type="hidden" class="form-control"  name="id" value="{{data.0}}">
+                           </div>
+                             <div class="row">
+                            <div class="form-group col">
+                                 Name:
+                                 <input type="text" class="form-control"  name="Name" value="{{data.1}}">
+                           </div>
+                            <div class="form-group col">
+                                Address:
+                                 <input type="text" class="form-control"  name="Address" value="{{data.2}}">
+                           </div>
                            </div>
 
-                           <div class="form-group">
+                            <div class="row">
+                            <div class="form-group col">
+                                 NID:
+                                 <input type="text" class="form-control"  name="nid" value="{{data.3}}">
+                           </div>
+                            <div class="form-group col">
+                                 Phone:
+                                 <input type="tel" class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone" value="{{data.4}}">
+                           </div>
+                           </div>
 
-                               Doze2:
-                               <select class="custom-select"   name="Doze2">
+
+                           <div class="row">
+
+                            <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="age_group" value="{{data.5}}" >
+                                </div>
+                            <div class="form-group col">
+                           Age Group:<br>
+                           <select class="custom-select"   name="Age_group">
+                                      <option selected>Age Group</option>
+                                        <option>18-25</option>
+                                         <option>26-40</option>
+
+                                        <option>41-60</option>
+                                      <option>61-80</option>
+                           </select></div>
+
+
+                               <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="allergies" value="{{data.6}}" >
+                                </div>
+                            <div class="form-group col">
+
+                               Allergies:
+                               <select class="custom-select"   name="Allergies">
+                                      <option selected>Allergies</option>
+                                        <option>Yes</option>
+                                         <option>No</option>
+                               </select></div>
+                           </div>
+                           <div class="row">
+                            <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="ailments" value="{{data.7}}" >
+                                </div>
+                           <div class="form-group col">
+
+                               Prior Ailments:
+                               <select class="custom-select"   name="Ailments">
+                                      <option selected>Prior Ailments</option>
+                                        <option>Yes</option>
+                                         <option>No</option>
+                               </select></div><br><br>
+
+                                <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="doze" value="{{data.8}}" >
+                                </div>
+                                 <div class="form-group col">
+
+                               Doze:
+                               <select class="custom-select"   name="Doze">
+                                        <option selected>Doze Name</option>
+                                        <option>Vero Cell</option>
+                                         <option>Moderna</option>
+                                         <option>Pfizer</option>
+                                         <option>Sinopharm</option>
+                               </select></div>
+                               <br><br>
+                            </div>
+
+                             <div class="row">
+                            <div class="form-group col">
+
+                               Appointment1 Date:
+                               <input type="date" class="form-control"  name="Date" value="{{data.9}}">
+                            </div>
+                                <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="doze1" value="{{data.10}}" >
+                                </div>
+                            <div class="form-group col">
+                                Doze1:
+                                 <select class="custom-select"   name="Doze1" >
+                                      <option selected>Doze1</option>
+                                        <option>Taken</option>
+                                         <option>Not Taken</option>
+
+                               </select>
+                           </div>
+                            </div>
+
+
+                             <div class="row">
+                            <div class="form-group col">
+
+                               Appointment2 Date:
+                               <input type="date" class="form-control"  name="Date2" value="{{data.11}}">
+                            </div>
+                             <div class="form-group">
+                                      <input type="hidden" class="form-control"  name="doze2" value="{{data.12}}" >
+                                </div>
+                            <div class="form-group col">
+                                Doze2:
+                                 <select class="custom-select"   name="Doze2" >
                                       <option selected>Doze2</option>
                                         <option>Taken</option>
                                          <option>Not Taken</option>
+
                                </select>
+                           </div>
                             </div>
 
 
 
                             <div class="form-group">
                               <button class="btn btn-primary" type="submit">Update</button>
-                                <button class="btn btn-primary" type="submit">Taken</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                            </div>
 
 
 
                        </form>
+
 
 
                    </div>

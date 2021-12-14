@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <title>Admin Patients List</title>
+</head>
+<style>
+
+         .d-flex{
+
+                     width:400px;
+
+                 }
+
+                 p{
+
+                        float:left;
+                        margin-right:300px;
+                        margin-top:11px;
+                    }
+</style>
+
+<body>
+
+
+<div class="nr">
+    <div class="nav-right">
+             <p>Patients List</p>
+        <a href="/ahome">Home</a>
+  <div class="dp">
+    <button class="dropbtn">Doctor
+
+    </button>
+    <div class="dc">
+      <a href="/adoctor">Doctor List</a>
+      <a href="/dsalary">Salary</a>
+    </div>
+  </div>
+
+    <div class="dp">
+    <button class="dropbtn">Bed</button>
+    <div class="dc">
+      <a href="/abed">Bed List</a>
+      <a href="/abedallotment">Bed Allotment</a>
+        <a href="/abedrequest">Bed Request</a>
+    </div>
+  </div>
+
+        <div class="dp">
+    <button class="dropbtn">Patient</button>
+    <div class="dc">
+        <a href="/acovid">Covid Test</a>
+      <a href="/apatient">Patient List</a>
+      <a href="/apayment">Payment</a>
+    </div>
+  </div>
+
+         <div class="dp">
+    <button class="dropbtn">Receptionist</button>
+    <div class="dc">
+      <a href="/areceptionist">Receptionist List</a>
+      <a href="/rsalary">Salary</a>
+    </div>
+  </div>
+
+
+    <div class="dp">
+    <button class="dropbtn">Vaccine</button>
+    <div class="dc">
+      <a href="/adoze1">Doze 1</a>
+      <a href="/adoze2">Doze 2</a>
+      <a href="/vaccinated">Vaccinated</a>
+    </div>
+  </div>
+
+     <div class="dp">
+    <button class="dropbtn">Admin</button>
+    <div class="dc">
+      <a href="/adminprofile">Profile</a>
+      <a href="/logout">Logout</a>
+
+    </div>
+  </div>
+
+
+
+    </div>
+</div>
+
+
+<br>
+
+
+
+  <form class="d-flex m-auto w-80" method="post" action="/searchp" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Patient">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+
+
+ <div class="container">
+
+                <button type="button" style="margin:5px;" class=" btn btn-primary float-right" data-toggle="modal" data-target="#mymodal">Add Patients</button><br>
+                  {%with messages = get_flashed_messages() %}
+             {%if messages%}
+             {%for message in messages%}
+             <div class="alert alert-success alert-dismissable w-75" role="alert">
+                  <button type="button" class="close " data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">x</span>
+                  </button>
+                  {{message}}
+              </div>
+
+             {%endfor%}
+             {%endif%}
+             {%endwith%}
+
+      <div class="table-responsive-sm">
+             <table class="table table-sm thead-light table-hover table-striped">
+             <tr>
+
+               <th>Patient_id</th>
+                 <th>Patient_name</th>
+                  <th>Bed_id</th>
+                 <th>Condition</th>
+
+                 <th>Action</th>
+
+
+           </tr>
+             {%for data in apatient%}
+              <tr>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.8}}</td>
+                    <td>{{data.10}}</td>
+
+                  <td>
+
+                       <a href="/updatep/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
+
+                       <a href="/deletep/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+             </td>
+
+
+              </tr>
+
+
+
+
+   <!--Patient Edit-->
+
+
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
+
+           <div class="modal-dialog modal-xl">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please Update Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form    action="updatep" method="POST"   enctype="multipart/form-data">
+
+                            <div class="form-group ">
+                                 <input type="hidden" class="form-control"  name="Patient_id" value="{{data.0}}">
+                           </div>
+
+
+
+
+
+                           <div class="row">
+                            <div class="form-group col">
+                                Patients Name:
+                                <input type="text"   class="form-control"    name="Patient_name"  value="{{data.1}}">
+                           </div>
+
+                           <div class="form-group col">
+                               Phone:
+                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone"  value="{{data.2}}">
+                           </div>
+
+                           </div>
+
+                          <div class="row">
+                            <div class="form-group col">
+                                Relatives Name:
+                                <input type="text"   class="form-control"   name="Relative_name"  value="{{data.3}}">
+                           </div>
+
+                           <div class="form-group col">
+                               Relatives Phone:
+                               <input type="tel"   class="form-control"   name="Relative_Phone"  value="{{data.4}}">
+                           </div>
+
+                           </div>
+
+                            <div class="row">
+                            <div class="form-group col">
+                                Address:
+                                <input type="text"   class="form-control"   name="Address"  value="{{data.5}}">
+                           </div>
+
+                           <div class="form-group col">
+                               Prior Ailments:
+                                <input type="text"   class="form-control"   name="ailment" value="{{data.6}}">
+                                 </div>
+
+                           </div>
+
+                           <div class="row">
+
+                            <div class="form-group col">
+                                Date:
+                                <input type="date"   class="form-control"   name="date"  value="{{data.7}}">
+                           </div>
+
+                           <div class="form-group col">
+                               Bed No:
+                                <input type="number"   class="form-control"   name="Bed_id"  value="{{data.8}}"><!--selector-->
+                                 </div>
+
+                           </div>
+
+                           <div class="row">
+                            <div class="form-group col">
+                                <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="con" value="{{data.10}}">
+                                   </div>
+                               Condition:
+
+                                <select class="custom-select"   name="Condition">
+                                      <option selected>Condition</option>
+                                        <option>Critical</option>
+                                         <option>Recovered</option>
+                                    <option>Recovering</option>
+                                    <option>Discharge</option>
+                                      <option>Death</option>
+                                 </select>
+                           </div>
+
+                           <div class="form-group col">
+                               Assigned Doctor:
+                                <input type="text"   class="form-control"   name="Doctor_name"   value="{{data.9}}"><!--selector-->
+                                 </div>
+
+                           </div>
+
+
+                           <br><br>
+
+
+
+
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+          {%endfor%}
+             </table>
+           </div>
+
+
+
+  <!--Add Patient-->
+
+
+
+  <div id="mymodal" class="modal fade" role="dialog">
+
+           <div class="modal-dialog modal-xl">
+               <div class="modal-content">
+                   <div class="modal-header">
+                        <h6 class="modal-title">Please insert Data</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body">
+                       <form  action="insertp" method="POST"  enctype="multipart/form-data">
+                            <div class="row">
+                            <div class="form-group col">
+                                Patients Name:
+                                <input type="text"   class="form-control"    name="Patient_name"  required="1">
+                           </div>
+
+                           <div class="form-group col">
+                               Phone:
+                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone"  required="1">
+                           </div>
+
+                           </div>
+
+                          <div class="row">
+                            <div class="form-group col">
+                                Relatives Name:
+                                <input type="text"   class="form-control"   name="Relative_name"  required="1">
+                           </div>
+
+                           <div class="form-group col">
+                               Relatives Phone:
+                               <input type="tel"   class="form-control"   name="Relative_Phone"  value=" ">
+                           </div>
+
+                           </div>
+
+                            <div class="row">
+                            <div class="form-group col">
+                                Address:
+                                <input type="text"   class="form-control"   name="Address"  required="1">
+                           </div>
+
+                           <div class="form-group col">
+                               Prior Ailments:
+                                <input type="text"   class="form-control"   name="ailment"  required="1">
+                                 </div>
+
+                           </div>
+
+                           <div class="row">
+
+                            <div class="form-group col">
+                                Date:
+                                <input type="date"   class="form-control"   name="date"  required="1">
+                           </div>
+
+                           <div class="form-group col">
+                               Bed No:
+                                <input type="number"   class="form-control"   name="Bed_id"  required="1"><!--selector-->
+                                 </div>
+
+                           </div>
+
+                           <div class="row">
+                            <div class="form-group col">
+                               Condition:
+
+                                <select class="custom-select"   name="Condition">
+                                      <option selected>Condition</option>
+                                        <option>Critical</option>
+                                         <option>Recovered</option>
+
+                                        <option>Recovering</option>
+                                    <option>Discharge</option>
+                                      <option>Death</option>
+                                 </select>
+                           </div>
+
+                           <div class="form-group col">
+                               Assigned Doctor:
+                                <input type="text"   class="form-control"   name="Doctor_name"  required="1"><!--selector-->
+                                 </div>
+
+                           </div>
+
+                           <center><b><label>Sypmtoms</label></b></center>
+
+                           <div class="row">
+                                <div class="col">
+                               <label>Common</label>
+                                <div class="form-check">
+                               <input   type="checkbox" class="get_value" value="fever" id="fever">
+                                   <label  for="fever">
+                                   Fever
+                                      </label>
+                                </div>
+                           <div class="form-check">
+                                <input  type="checkbox" class="get_value" value="drycough" id="drycough">
+                                 <label   for="drycough">
+                                   Dry Cough
+                                   </label>
+                            </div>
+
+                                 <div class="form-check">
+                                <input   type="checkbox" class="get_value" value="tiredness" id="tiredness" >
+                                 <label   for="tiredness">
+                                   Tiredness
+                                   </label>
+
+                                 </div>
+                                </div>
+
+                               <div class="col">
+                                    <label>Less Common</label>
+                                <div class="form-check">
+                               <input   type="checkbox" class="get_value" value="aches" id="aches">
+                                   <label  for="aches">
+                                   Aches and Pains
+                                      </label>
+                                </div>
+                           <div class="form-check">
+                                <input  type="checkbox" class="get_value" value="sorethroat" id="sorethroat">
+                                 <label  for="sorethroat">
+                                   Sore throat
+                                   </label>
+                            </div>
+
+                                 <div class="form-check">
+                                <input   type="checkbox" class="get_value" value="diarrhoea" id="diarrhoea">
+                                 <label   for="diarrhoea">
+                                   Diarrhoea
+                                   </label>
+                                 </div>
+                               </div>
+
+                               <div class="col">
+                                      <label>Serious</label>
+                                <div class="form-check">
+                               <input   type="checkbox" class="get_value" value="breath" id="breath">
+                                   <label  for="breath">
+                                   Breathing Problem
+                                      </label>
+                                </div>
+                           <div class="form-check">
+                                <input  type="checkbox" class="get_value" value="chest" id="chest">
+                                 <label  for="chest">
+                                   Chest Pain
+                                   </label>
+                            </div>
+
+                               </div>
+
+                           </div>
+
+
+
+
+                                 <br><br>
+
+                           <div class="form-group">
+                              <button class="btn btn-primary" type="submit" name="submit" id="submit">Insert</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+
+
+</div>
+
+
+               </div>
+           </div>
+       </div>
+
+
+</div>
+
+
+
+      <script src="static/js/jQuery.js"></script>
+       <script src="static/js/bootstrap.min.js"></script>
+       <script src="static/js/all.min.js"></script>
+</body>
+</html>

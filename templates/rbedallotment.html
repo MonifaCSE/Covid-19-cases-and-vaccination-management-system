@@ -69,7 +69,7 @@
     <button class="dropbtn">Receptionist </button>
     <div class="dc">
       <a href="/rprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/rlogout">Logout</a>
 
     </div>
   </div>
@@ -81,11 +81,11 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+
+ <form class="d-flex m-auto w-80" method="post" action="/searchrecba" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="allot">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
-
  <div class="container">
 
                 <button type="button" style="margin:5px;" class=" btn btn-primary float-right" data-toggle="modal" data-target="#mymodal">Add Allotment</button><br>
@@ -119,19 +119,20 @@
 
            </tr>
 
+             {%for data in rbedallotment%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>sss</td>
-                    <td>sss</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
 
                   <td>
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
+                      <a href="/updaterecba/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+                       <a href="/deleterecba/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                </td>
 
 
               </tr>
@@ -140,7 +141,7 @@
    <!--Bed Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -150,32 +151,33 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updaterecba" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Allotment_no" value="">
+                                 <input type="hidden" class="form-control"  name="Allotment_no" value="{{data.0}}">
                            </div>
 
                            <div class="form-group">
                                Patient ID:
-                                 <input type="number" class="form-control"  name="Patient_id" value="">
+                                 <input type="number" class="form-control"  name="Patient_id" value="{{data.1}}">
                            </div>
 
                            <div class="form-group">
                                Bed ID:
-                                 <input type="number" class="form-control"  name="Bed_id" value="">
+                                 <input type="number" class="form-control"  name="Bed_id" value="{{data.2}}">
                            </div>
 
 
 
                            <div class="form-group">
+
                                Allotment Date:
-                                 <input type="datetime-local" class="form-control"  name="Allotment_date" value="">
+                                 <input type="date" class="form-control"  name="Allotment_date"  value="{{data.3}}">
                            </div>
 
                            <div class="form-group">
                                Discharge Date:
-                                 <input type="datetime-local" class="form-control"  name="Discharge_date" value="">
+                                 <input type="date" class="form-control"  name="Discharge_date" value="{{data.4}}">
                            </div>
 
                             <div class="form-group">
@@ -213,10 +215,10 @@
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertrecba" method="POST"  enctype="multipart/form-data">
 
 
-                         <div class="form-group">
+                          <div class="form-group">
                                Patient ID:
                                  <input type="number" class="form-control"  name="Patient_id" required="1">
                            </div>
@@ -230,12 +232,12 @@
 
                            <div class="form-group">
                                Allotment Date:
-                                 <input type="datetime-local" class="form-control"  name="Allotment_date" required="1">
+                                 <input type="date" class="form-control"  name="Allotment_date" required="1">
                            </div>
 
                            <div class="form-group">
                                Discharge Date:
-                                 <input type="datetime-local" class="form-control"  name="Discharge_date" required="1">
+                                 <input type="date" class="form-control"  name="Discharge_date" required="1">
                            </div>
 
 

@@ -66,7 +66,7 @@
     <button class="dropbtn">Receptionist </button>
     <div class="dc">
       <a href="/rprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/rlogout">Logout</a>
 
     </div>
   </div>
@@ -80,8 +80,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+  <form class="d-flex m-auto w-80" method="post" action="/searchrecpp" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Payment">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -109,7 +109,7 @@
 
                  <th>Payment_no</th>
                  <th>Patient_id</th>
-
+                 <th>Patient_name</th>
                  <th>Total Amount</th>
                  <th>Deposit</th>
                  <th>Due Amount</th>
@@ -118,22 +118,28 @@
 
            </tr>
 
+              {%for data in rpayment%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>sss</td>
-                    <td>sss</td>
-
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                   <td>{{data.5}}</td>
                   <td>
 
 
 
-                       <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit">Edit</a>
-                        <a href="" class="btn btn-success btn-xs" onclick="myfun('print')">Print</a>
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                       <a href="/updaterecpp/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
+                        <button class="btn btn-success btn-xs" onclick="myfun()">Print</button>
+                        <script>
+                            function myfun(){
+                            window.print();
+                            }
+                        </script>
+                       <a href="/deleterecpp/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
 
-                  </td>
+                       </td>
 
 
               </tr>
@@ -146,7 +152,7 @@
    <!--Payment Edit-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog">
                <div class="modal-content">
@@ -156,32 +162,37 @@
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="updaterecpp" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="Payment_no" value="">
+                                 <input type="hidden" class="form-control"  name="Payment_no" value="{{data.0}}">
                            </div>
 
                            <div class="form-group">
                                Patient ID:
-                                 <input type="number" class="form-control"  name="Patient_id" value="">
+                                 <input type="number" class="form-control"  name="Patient_id" value="{{data.1}}">
+                           </div>
+
+                           <div class="form-group">
+                                Patients Name:
+                                <input type="text"   class="form-control"    name="Patient_name"  value="{{data.2}}">
                            </div>
 
                            <div class="form-group">
                                Total Amount:
-                                 <input type="number" class="form-control"  name="Total_amount" value="">
+                                 <input type="number" class="form-control"  name="Total_amount" value="{{data.3}}">
                            </div>
 
 
 
                            <div class="form-group">
                                Deposit:
-                                 <input type="number" class="form-control"  name="Deposit" value="">
+                                 <input type="number" class="form-control"  name="Deposit" value="{{data.4}}">
                            </div>
 
                            <div class="form-group">
                                Due Amount:
-                                 <input type="number" class="form-control"  name="Due_amount" value="">
+                                 <input type="number" class="form-control"  name="Due_amount" value="{{data.5}}">
                            </div>
 
                             <div class="form-group">
@@ -219,7 +230,7 @@
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertrecpp" method="POST"  enctype="multipart/form-data">
 
 
                                             <div class="form-group">
@@ -227,6 +238,10 @@
                                  <input type="number" placeholder="Patient ID" class="form-control"  name="Patient_id" required="1">
                            </div>
 
+                            <div class="form-group">
+
+                                <input type="text"  placeholder="Patient Name" class="form-control"    name="Patient_name"  required="1">
+                           </div>
                            <div class="form-group">
 
                                  <input type="number"  placeholder="Total Amount" class="form-control"  name="Total_amount" required="1">
