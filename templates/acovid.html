@@ -141,16 +141,17 @@
 
            </tr>
 
+             {%for data in acovid%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                   <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                     <td>ddd</td>
-                      <td>sss</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
+                    <td>{{data.6}}</td>
+                   <td>{{data.7}}</td>
+                    <td>{{data.8}}</td>
 
                   <td>
 
@@ -181,27 +182,27 @@
                        <form    action="" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group">
-                                 <input type="hidden" class="form-control"  name="id" value="">
+                                 <input type="hidden" class="form-control"  name="id" value="{{data.0}}">
                            </div>
                              <div class="row">
                             <div class="form-group col">
                                  Name:
-                                 <input type="text" class="form-control"  name="Name" value="">
+                                 <input type="text" class="form-control"  name="Name" value="{{data.1}}">
                            </div>
                             <div class="form-group col">
                                 Address:
-                                 <input type="number" class="form-control"  name="Address" value="">
+                                 <input type="number" class="form-control"  name="Address" value="{{data.2}}">
                            </div>
                            </div>
 
                             <div class="row">
                             <div class="form-group col">
                                  Email:
-                                 <input type="email" class="form-control"  name="email" value="">
+                                 <input type="email" class="form-control"  name="email" value="{{data.4}}">
                            </div>
                             <div class="form-group col">
                                  Phone:
-                                 <input type="tel" class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone" value="">
+                                 <input type="tel" class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone" value="{{data.5}}">
                            </div>
                            </div>
 
@@ -210,7 +211,7 @@
 
                             <div class="form-group col">
                            Age Group:<br>
-                           <select class="custom-select"   name="Age_roup">
+                           <select class="custom-select"   name="age_group">
                                       <option selected>Age Group</option>
                                         <option>18-25</option>
                                          <option>26-40</option>
@@ -222,7 +223,7 @@
                            <div class="form-group col">
 
                                Appointment Date:
-                               <input type="datetime-local" class="form-control"  name="Appointment" value="">
+                               <input type="datetime-local" class="form-control"  name="Appointment" value="{{data.6}}">
                             </div>
                             </div>
 

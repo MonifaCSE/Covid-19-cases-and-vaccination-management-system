@@ -28,9 +28,7 @@ background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, F
                         margin-right:500px;
                         margin-top:11px;
                     }
-             h6{
-                margin-left:100px;
-             }
+
 </style>
 
 <body>
@@ -118,9 +116,9 @@ background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, F
              {%endwith%}
         <div class="content-section">
         <div class="media">
-            <img class="rounded-circle account-img" src="/static/upload/{{p.7}}" height="150" width="150">
+            <img class="rounded-circle account-img" src="/static/upload/{{p.7}}" height="120" width="120">
       </div>
-            <h6>{{p.1}}</h6>
+            <center><h6>{{p.1}}</h6></center>
         </div>
 
         <div class="card">
@@ -162,8 +160,18 @@ background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, F
                                 <input type="file"   class="form-control" name="file1">
                            </div>
 
+                           <div class="row">
+                               Ambulance:
+                           <div class="form-group col">
 
+                               <input type="number"  class="form-control" name="ambu" value="{{p.8}}" >
+                           </div>
+                               Oxygen:
+                             <div class="form-group col">
 
+                               <input type="number"   class="form-control" name="oxy" value="{{p.9}}" >
+                           </div>
+                           </div>
 
                             <div class="form-group">
                               <button class="btn btn-primary btn-lg btn-block" type="submit">Edit</button>

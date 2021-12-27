@@ -25,36 +25,14 @@ def about():
 def portfolio():
     return render_template('portfolio.html')
 
-@app.route('/service')
-def service():
-    return render_template('service.html')
-
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
 
-
-
-@app.route('/ulogin')
-def ulogin():
-    return render_template('ulogin.html')
-@app.route('/uregister')
-def uregister():
-    return render_template('uregister.html')
 @app.route('/services')
 def services():
     return render_template('service.html')
 
-
-@app.route('/uhome')
-def uhome():
-    return render_template('uhome.html')
-
-
-
-@app.route('/acovid')
-def acovid():
-    return render_template('acovid.html')
 
 
 @app.route('/dsalary')
@@ -68,14 +46,6 @@ def rsalary():
 def abedrequest():
     return render_template('abedrequest.html')
 
-
-
-@app.route('/ubed')
-def ubed():
-    return render_template('ubed.html')
-@app.route('/uprofile')
-def uprofile():
-    return render_template('uprofile.html')
 
 
 
@@ -101,7 +71,15 @@ def slogin():
 @app.route('/shome')
 def shome():
     if 'id' in session:
-        return render_template('shome.html')
+        cursor.execute("select count(*) from hospital")
+        h=cursor.fetchone()
+        cursor.execute("select count(*) from patient where Pcondition='Recovered'")
+        r = cursor.fetchone()
+        cursor.execute("select count(*) from patient where Pcondition='Death'")
+        d = cursor.fetchone()
+        cursor.execute("select count(*) from vaccinated")
+        v = cursor.fetchone()
+        return render_template('shome.html',h=h,v=v,r=r,d=d)
     else:
         return redirect('/')
 
@@ -358,7 +336,19 @@ def ahome():
         s = session['Hospital_id']
         cursor.execute("SELECT * FROM HOSPITAL WHERE Hospital_id = '" + str(s) + "'")
         p = cursor.fetchone()
-        return render_template('ahome.html',p=p)
+        cursor.execute("SELECT COUNT(*) FROM PATIENT WHERE Hospital_id = '" + str(s) + "'")
+        a = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) FROM PATIENT WHERE Hospital_id = '" + str(s) + "' and Pcondition='Recovered'")
+        r = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) FROM PATIENT WHERE Hospital_id = '" + str(s) + "' and Pcondition='Death'")
+        d = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) FROM VACCINATED WHERE Hospital_id = '" + str(s) + "'")
+        v = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) FROM DOCTOR WHERE Hospital_id = '" + str(s) + "'")
+        do = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) FROM BED_LIST WHERE Hospital_id = '" + str(s) + "' and Status='Available'")
+        b = cursor.fetchone()
+        return render_template('ahome.html',p=p,a=a,r=r,d=d,v=v,do=do,b=b)
     else:
         return redirect('/')
 
@@ -401,7 +391,8 @@ def aprofile():
         email = request.form['Email']
         password = request.form['Password']
         phone = request.form['Phone']
-
+        ambu = request.form['ambu']
+        oxy = request.form['oxy']
         file1 = request.files['file1']
         filename1 = secure_filename(file1.filename)
         if filename1 == '':
@@ -410,8 +401,8 @@ def aprofile():
             file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
 
         cursor.execute("""UPDATE hospital
-        SET   Email=%s ,Password=%s ,Phone=%s ,image=%s WHERE  Hospital_id=%s""",
-                       (email, password, phone, filename1, id))
+        SET   Email=%s ,Password=%s ,Phone=%s ,image=%s,Ambulance=%s,Oxygen=%s WHERE  Hospital_id=%s""",
+                       (email, password, phone, filename1,ambu,oxy,id))
         flash("Data Updated Successfully")
         conn.commit()
 
@@ -1289,7 +1280,9 @@ def rhome():
         s = session['Hospital_id']
         cursor.execute("SELECT * FROM HOSPITAL WHERE Hospital_id = '" + str(s) + "'")
         p = cursor.fetchone()
-        return render_template('rhome.html',p=p)
+        cursor.execute("SELECT COUNT(*) FROM BED_LIST WHERE Hospital_id = '" + str(s) + "'")
+        b = cursor.fetchone()
+        return render_template('rhome.html',p=p,b=b)
     else:
         return redirect('/')
 
@@ -1956,6 +1949,225 @@ def searchrecv():
             rvaccinated = cursor.fetchall()
         return render_template('rvaccinated.html', rvaccinated=rvaccinated)
     return redirect('/rvaccinated')
+
+#..........................User panel..................................
+#....................User Registration...........................
+
+
+@app.route('/uregister')
+def uregister():
+    return render_template('uregister.html')
+
+@app.route('/adduser', methods=['POST'])
+def adduser():
+        if request.method == "POST":
+            flash("Registered Successfully")
+            name = request.form['name']
+            address = request.form['address']
+            email = request.form['email']
+            password = request.form['password']
+
+            cursor.execute(
+                "INSERT INTO USER (Name,Address,Email,password) VALUES (%s,%s,%s,%s)",
+                (name,address,email,password))
+            conn.commit()
+            return redirect('/uregister')
+
+#..................User login........
+
+@app.route('/ulogout')
+def ulogout():
+    session.pop('user_id')
+    return redirect('/')
+
+@app.route('/ulogin')
+def ulogin():
+    if 'user_id' in session:
+        return redirect('/uhome')
+    else:
+        return render_template('ulogin.html')
+
+
+@app.route('/uhome')
+def uhome():
+    if 'user_id' in session:
+        return render_template('uhome.html')
+    else:
+        return redirect('/')
+
+@app.route('/ulogin_validation', methods=['POST'])
+def ulogin_validation():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    cursor.execute(
+        """SELECT * FROM `user` WHERE `Email` LIKE '{}' AND `Password` LIKE '{}'"""
+        .format(email, password))
+    user = cursor.fetchall()
+
+    if (user):
+        if len(user) > 0:
+            session['user_id'] = user[0][0]
+            return redirect('/uhome')
+
+    return redirect('/')
+
+#.................Covid Test....................
+
+@app.route('/acovid')
+def acovid():
+    if 'user_id' in session:
+         cursor.execute("SELECT* FROM `covid_test`")
+         acovid=cursor.fetchall()
+         return render_template('acovid.html',acovid=acovid)
+    else:
+        return redirect('/')
+
+
+
+@app.route('/insertur', methods=['POST'])
+def insertur():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            name = request.form['Name']
+            address = request.form['Address']
+            email = request.form['Email']
+            phone = request.form['Phone']
+            agegroup = request.form['age_group']
+            appointment = request.form['Appointment']
+
+            cursor.execute(
+                "INSERT INTO COVID_TEST (Name,Address,Email,Phone,Age_group,Appointment_date) VALUES (%s,%s,%s,%s,%s,%s)",
+                (name,address,email,phone,agegroup,appointment))
+
+            conn.commit()
+            return redirect('/uhome')
+
+@app.route('/approveur', methods=['POST'])
+def approveur():
+        if request.method == "POST":
+
+            requestid = request.form['Request_id']
+            hospitalname = request.form['Hospital_name']
+            district = request.form['District']
+            address = request.form['Address']
+            email = request.form['Email']
+            password = request.form['Password']
+            phone = request.form['Phone']
+
+
+            cursor.execute(
+                "INSERT INTO HOSPITAL (Hospital_name,District,Address,Email,Password,Phone,image) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                (hospitalname, district, address, email, password, phone))
+            cursor.execute("""UPDATE covid_test 
+                                    SET  Hospital_name=%s, District=%s ,Address=%s ,Email=%s ,Password=%s ,Phone=%s ,image=%s ,Approval="Approved" WHERE Request_id=%s""",
+                           (hospitalname, district, address, email, password, phone, requestid))
+
+            flash("Accepted")
+            conn.commit()
+
+            return redirect('/acovid')
+
+@app.route('/deleteur/<string:urequestid>', methods=['POST', 'GET'])
+def deleteur(urequestid):
+        flash("Request has been Rejected")
+
+        cursor.execute("""UPDATE covid_test  SET  Approval="Rejected" WHERE Request_id=%s""",(urequestid,))
+
+        conn.commit()
+        return redirect('/acovid')
+
+
+
+
+#.....................................User profile............
+
+@app.route('/uprofile')
+def uprofile():
+    if 'user_id' in session:
+       s=session['user_id']
+       cursor.execute("SELECT * FROM user WHERE user_id = '"+str(s)+"'")
+       p = cursor.fetchone()
+
+       return render_template('uprofile.html', p=p)
+
+    else:
+        return redirect('/')
+
+
+@app.route('/ueprofile', methods=['POST', 'GET'])
+def ueprofile():
+    if request.method == "POST":
+
+        userid = request.form['user_id']
+        email = request.form['Email']
+        password = request.form['Password']
+        address = request.form['Address']
+
+
+
+        cursor.execute("""UPDATE user 
+        SET   Address=%s,Email=%s ,Password=%s  WHERE  user_id=%s""",
+                       (address,email, password, userid))
+        flash("Data Updated Successfully")
+        conn.commit()
+
+        return redirect('/uprofile')
+
+#...................User Bed.............................
+
+@app.route('/ubed')
+def bed():
+    if 'user_id' in session:
+         cursor.execute("""select b.Bed_id,b.Bed_category,b.cost,b.Status,h.Hospital_name,h.District
+                           from bed_list b,hospital h
+                           where  b.Hospital_id=h.Hospital_id and b.Status='Available'
+                           order by b.Bed_id asc""")
+         ubed=cursor.fetchall()
+         return  render_template('ubed.html',ubed=ubed)
+    else:
+        return redirect('/')
+
+
+
+@app.route('/insertub', methods=['POST'])
+def insertub():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            patientname = request.form['Patient_name']
+            phone = request.form['Phone']
+            relativename=request.form['Relative_name']
+            rphone = request.form['Relative_Phone']
+            address = request.form['Address']
+            pailments=request.form['ailment']
+            date=request.form['date']
+            bedno = request.form['Bed_id']
+
+            cursor.execute(
+                "INSERT INTO PATIENT_REQUEST (Patient_name,Phone,Relative_name,Relative_Phone,Address,Ailment,Date,Bed_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+                (patientname,phone,relativename,rphone,address,pailments,date,bedno))
+            conn.commit()
+            return redirect('/ubed')
+
+
+@app.route('/searchub', methods=['GET', 'POST'])
+def searchub():
+    if request.method == "POST":
+        bed = request.form['Bed']
+        cursor.execute("""select b.Bed_id,b.Bed_category,b.cost,b.Status,h.Hospital_name,h.District 
+                          from bed_list b,hospital h  where  b.Hospital_id=h.Hospital_id and b.Status='Available' and (b.Bed_category LIKE %s OR b.cost LIKE %s OR h.Hospital_name LIKE %s OR h.District LIKE %s)
+                          order by b.Bed_id asc""", (bed,bed,bed,bed))
+        ubed = cursor.fetchall()
+
+        if (len(ubed) == 0 and bed == 'all') or len(bed)==0:
+            cursor.execute("""select b.Bed_id,b.Bed_category,b.cost,b.Status,h.Hospital_name,h.District
+                           from bed_list b,hospital h
+                           where  b.Hospital_id=h.Hospital_id and b.Status='Available'
+                           order by b.Bed_id asc""")
+
+            ubed = cursor.fetchall()
+        return render_template('ubed.html', ubed=ubed)
+    return redirect('/ubed')
+
 
 if __name__=="__main__":
     app.run(debug=True)

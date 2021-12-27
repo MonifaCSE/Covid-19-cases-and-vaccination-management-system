@@ -37,12 +37,10 @@
     <div class="nav-right">
         <p>General User</p>
         <a  href="/uhome">Home</a>
-
-        <a  data-toggle="modal" data-target="#mymodal">Covid Test</a>
         <a   href="https://surokkha.gov.bd/">Vaccine Registration</a>
         <a   href="/ubed">Bed</a>
         <a href="/uprofile">Profile</a>
-      <a href="/logout">Logout</a>
+      <a href="/ulogout">Logout</a>
 
       </div>
      </div>
@@ -53,8 +51,8 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+  <form class="d-flex m-auto w-80" method="post" action="/searchub" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Bed">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
@@ -84,120 +82,25 @@
 
                <th>Bed_id</th>
                  <th>Bed Category</th>
-                 <th>Hospital Name</th>
-                 <th>Cost</th>
+                  <th>Cost</th>
                   <th>Status</th>
+                  <th>Hospital Name</th>
+                  <th>District</th>
            </tr>
 
+              {%for data in ubed%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                  <td>Ccc</td>
-                  <td>dddc</td>
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                    <td>{{data.4}}</td>
+                    <td>{{data.5}}</td>
               </tr>
 
               {%endfor%}
              </table>
            </div>
-
-
-
-
-
-
-   <!--Covid test-->
-
-
-
-  <div id="mymodal" class="modal fade" role="dialog">
-
-           <div class="modal-dialog">
-               <div class="modal-content">
-                   <div class="modal-header">
-                        <h6 class="modal-title">Please insert Data</h6>
-                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                   </div>
-                   <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
-
-
-                          <div class="row">
-                            <div class="form-group col">
-                                 Name:
-                                 <input type="text" class="form-control"  name="Name" required="1">
-                           </div>
-                            <div class="form-group col">
-                                Address:
-                                 <input type="number" class="form-control"  name="Address" required="1">
-                           </div>
-                           </div>
-
-
-
-                           <div class="row">
-                            <div class="form-group col">
-                                 Email:
-                                 <input type="email" class="form-control"  name="email" required="1">
-                           </div>
-                            <div class="form-group col">
-                                 Phone:
-                                 <input type="tel" class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone" required="1">
-                           </div>
-                           </div>
-                           <div class="row">
-
-                            <div class="form-group col">
-                           Age Group:<br>
-                           <select class="custom-select"   name="Age_roup">
-                                      <option selected>Age Group</option>
-                                        <option>18-25</option>
-                                         <option>26-40</option>
-
-                                        <option>41-60</option>
-                                      <option>61-80</option>
-                           </select></div>
-
-                               <div class="form-group col">
-                           Preferred Center:<br>
-                           <select class="custom-select"   name="center">
-                                      <option selected>Preferred Center</option>
-                                        <option>Chittagong Medical College Hospital</option>
-                                         <option>Imperial Hospital Limited</option>
-
-                           </select></div>
-                              </div>
-                               <div class="form-group">
-
-                               Appointment Date:
-                               <input type="datetime-local" class="form-control"  name="Appointment" required="1">
-                            </div>
-
-
-
-                             <br><br>
-
-
-
-                           <div class="form-group">
-                              <button class="btn btn-primary" type="submit">Insert</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                           </div>
-
-
-
-                       </form>
-
-</div>
-
-
-               </div>
-           </div>
-       </div>
-
-
-
 
 
 
@@ -219,7 +122,7 @@
 
                    </div>
                    <div class="modal-body">
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertub" method="POST"  enctype="multipart/form-data">
                             <div class="row">
                             <div class="form-group col">
                                 Patients Name:
@@ -236,12 +139,12 @@
                           <div class="row">
                             <div class="form-group col">
                                 Relatives Name:
-                                <input type="text"   class="form-control"   name="Patient_name"  required="1">
+                                <input type="text"   class="form-control"   name="Relative_name"  required="1">
                            </div>
 
                            <div class="form-group col">
                                Relatives Phone:
-                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone"  value=" ">
+                               <input type="tel"   class="form-control"  pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}"  name="Relative_Phone"  value=" ">
                            </div>
 
                            </div>
@@ -263,7 +166,7 @@
 
                             <div class="form-group col">
                                 Date:
-                                <input type="datetime-local"   class="form-control"   name="date"  required="1">
+                                <input type="date"   class="form-control"   name="date"  required="1">
                            </div>
 
                            <div class="form-group col">
@@ -273,27 +176,7 @@
 
                            </div>
 
-                           <div class="row">
-                            <div class="form-group col">
-                               Condition:
 
-                                <select class="custom-select"   name="Bed_category">
-                                      <option selected>Condition</option>
-                                        <option>Critical</option>
-                                         <option>Recovered</option>
-
-                                        <option>Recovering</option>
-                                    <option>Discharge</option>
-                                      <option>Death</option>
-                                 </select>
-                           </div>
-
-                           <div class="form-group col">
-                               Assigned Doctor:
-                                <input type="text"   class="form-control"   name="Doctor_name"  required="1"><!--selector-->
-                                 </div>
-
-                           </div>
 
                            <center><b><label>Sypmtoms</label></b></center>
 
