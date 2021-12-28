@@ -236,12 +236,22 @@
 
                          <div class="form-group">
                                Patient ID:
-                                 <input type="number" class="form-control"  name="Patient_id" required="1">
+                                 <select class="custom-select"   name="Patient_id">
+                               {% for row in patient %}
+                                   <option value="{{row.0}}">{{row.0}}</option>
+                               {% endfor %}
+
+                           </select>
                            </div>
 
                            <div class="form-group">
                                Bed ID:
-                                 <input type="number" class="form-control"  name="Bed_id" required="1">
+                                 <select class="custom-select"   name="Bed_id">
+                               {% for row in bed %}
+                                   <option value="{{row.0}}">{{row.0}}-{{row.1}}</option>
+                               {% endfor %}
+
+                           </select>
                            </div>
 
 

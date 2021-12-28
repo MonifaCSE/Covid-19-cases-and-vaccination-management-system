@@ -42,9 +42,19 @@ def dsalary():
 def rsalary():
     return render_template('rsalary.html')
 
+#...................Admin bed Request.....................
+
+
 @app.route('/abedrequest')
 def abedrequest():
-    return render_template('abedrequest.html')
+    if 'Hospital_id' in session:
+         s = session['Hospital_id']
+         cursor.execute("SELECT* FROM `patient_request` WHERE Hospital_id = '" + str(s) + "'")
+         abedrequest=cursor.fetchall()
+         return render_template('abedrequest.html',abedrequest=abedrequest)
+    else:
+        return redirect('/')
+
 
 
 
@@ -603,7 +613,11 @@ def abedallotment():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `bed_allotment` WHERE Hospital_id = '" + str(s) + "'")
          abedallotment=cursor.fetchall()
-         return  render_template('abedallotment.html',abedallotment=abedallotment)
+         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "'")
+         bed = cursor.fetchall()
+         cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
+         patient = cursor.fetchall()
+         return  render_template('abedallotment.html',abedallotment=abedallotment,bed=bed,patient=patient)
     else:
         return redirect('/')
 
@@ -678,7 +692,11 @@ def apatient():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          apatient=cursor.fetchall()
-         return  render_template('apatient.html',apatient=apatient)
+         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "'")
+         bed = cursor.fetchall()
+         cursor.execute("SELECT* FROM `doctor` WHERE Hospital_id = '" + str(s) + "'")
+         doctor = cursor.fetchall()
+         return  render_template('apatient.html',apatient=apatient,bed=bed,doctor=doctor)
     else:
         return redirect('/')
 
@@ -768,7 +786,9 @@ def apayment():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `patient_payment` WHERE Hospital_id = '" + str(s) + "'")
          apayment=cursor.fetchall()
-         return  render_template('apayment.html',apayment=apayment)
+         cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
+         patient = cursor.fetchall()
+         return  render_template('apayment.html',apayment=apayment,patient=patient)
     else:
         return redirect('/')
 
@@ -1991,7 +2011,9 @@ def ulogin():
 @app.route('/uhome')
 def uhome():
     if 'user_id' in session:
-        return render_template('uhome.html')
+        cursor.execute("SELECT * FROM hospital ORDER BY Hospital_id")
+        hos = cursor.fetchall()
+        return render_template('uhome.html',hos=hos)
     else:
         return redirect('/')
 
@@ -2033,11 +2055,12 @@ def insertur():
             email = request.form['Email']
             phone = request.form['Phone']
             agegroup = request.form['age_group']
+            center = request.form['center']
             appointment = request.form['Appointment']
 
             cursor.execute(
-                "INSERT INTO COVID_TEST (Name,Address,Email,Phone,Age_group,Appointment_date) VALUES (%s,%s,%s,%s,%s,%s)",
-                (name,address,email,phone,agegroup,appointment))
+                "INSERT INTO COVID_TEST (Name,Address,Email,Phone,Age_group,Hospital_id,Appointment_date) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                (name,address,email,phone,agegroup,center,appointment))
 
             conn.commit()
             return redirect('/uhome')
@@ -2141,10 +2164,12 @@ def insertub():
             pailments=request.form['ailment']
             date=request.form['date']
             bedno = request.form['Bed_id']
-
+            cursor.execute("SELECT Hospital_id FROM `bed_list` WHERE  Bed_id = '" + str(bedno) + "'")
+            hos=cursor.fetchall()
+            h=hos[0][0]
             cursor.execute(
-                "INSERT INTO PATIENT_REQUEST (Patient_name,Phone,Relative_name,Relative_Phone,Address,Ailment,Date,Bed_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
-                (patientname,phone,relativename,rphone,address,pailments,date,bedno))
+                "INSERT INTO PATIENT_REQUEST (Patient_name,Phone,Relative_name,Relative_Phone,Address,Ailment,Date,Bed_id,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (patientname,phone,relativename,rphone,address,pailments,date,bedno,h))
             conn.commit()
             return redirect('/ubed')
 

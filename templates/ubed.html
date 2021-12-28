@@ -144,7 +144,7 @@
 
                            <div class="form-group col">
                                Relatives Phone:
-                               <input type="tel"   class="form-control"  pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}"  name="Relative_Phone"  value=" ">
+                               <input type="tel"   class="form-control"  pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}"  name="Relative_Phone"  required="1">
                            </div>
 
                            </div>
@@ -171,7 +171,12 @@
 
                            <div class="form-group col">
                                Bed No:
-                                <input type="number"   class="form-control"   name="Bed_id"  required="1"><!--selector-->
+                                <select class="custom-select"   name="Bed_id">
+                                       {% for row in ubed %}
+                                             <option value="{{row.0}}">{{row.0}}</option>
+                                       {% endfor %}
+
+                                 </select>
                                  </div>
 
                            </div>

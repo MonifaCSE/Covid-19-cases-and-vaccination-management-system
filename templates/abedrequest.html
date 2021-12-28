@@ -132,14 +132,12 @@
 
            </tr>
 
+              {%for data in abedrequest%}
               <tr>
-
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                   <td>ddd</td>
-
-
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.8}}</td>
+                    <td>{{data.10}}</td>
 
                   <td>
 
@@ -240,7 +238,12 @@
 
                            <div class="form-group col">
                                Assigned Doctor:
-                                <input type="text"   class="form-control"   name="Doctor_name"  required="1"><!--selector-->
+                                <select class="custom-select"   name="Doctor_id">
+                               {% for row in doctor %}
+                                   <option value="{{row.1}}">{{row.1}}</option>
+                               {% endfor %}
+
+                           </select>
                                  </div>
 
                            </div>
