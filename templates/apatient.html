@@ -224,7 +224,7 @@
 
                            <div class="form-group col">
                                Bed No:
-                                <input type="number"   class="form-control"   name="Bed_id"  value="{{data.8}}"><!--selector-->
+                                <input type="number"   class="form-control"   name="Bed_id"  value="{{data.8}}">
                                  </div>
 
                            </div>
@@ -248,7 +248,7 @@
 
                            <div class="form-group col">
                                Assigned Doctor:
-                                <input type="text"   class="form-control"   name="Doctor_name"   value="{{data.9}}"><!--selector-->
+                                <input type="text"   class="form-control"   name="Doctor_name"   value="{{data.9}}">
                                  </div>
 
                            </div>
@@ -370,7 +370,7 @@
 
                            <div class="form-group col">
                                Assigned Doctor:
-                                <select class="custom-select"   name="Doctor_id">
+                                <select class="custom-select"   name="Doctor_name">
                                {% for row in doctor %}
                                    <option value="{{row.1}}">{{row.1}}</option>
                                {% endfor %}

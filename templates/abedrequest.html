@@ -141,10 +141,10 @@
 
                   <td>
 
-                       <a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modaledit">Accept</a>
+                        <a href="/approveub/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Accept</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Reject</a>
-                  </td>
+                       <a href="/deleteub/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Reject?')">Reject</a>
+                 </td>
 
 
               </tr>
@@ -152,20 +152,20 @@
    <!--Patient Accept-->
 
 
-             <div id="modaledit" class="modal fade" role="dialog">
+             <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
            <div class="modal-dialog modal-xl">
                <div class="modal-content">
                    <div class="modal-header">
-                        <h6 class="modal-title">Please Update Data</h6>
+                        <h6 class="modal-title">Accept Request</h6>
                        <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                    </div>
                    <div class="modal-body">
-                       <form    action="" method="POST"   enctype="multipart/form-data">
+                       <form    action="approveub" method="POST"   enctype="multipart/form-data">
 
                             <div class="form-group ">
-                                 <input type="hidden" class="form-control"  name="Request_id" value="">
+                                 <input type="hidden" class="form-control"  name="Request_id" value="{{data.0}}">
                            </div>
 
 
@@ -175,12 +175,12 @@
                            <div class="row">
                             <div class="form-group col">
                                 Patients Name:
-                                <input type="text"   class="form-control"    name="Patient_name"  value="">
+                                <input type="text"   class="form-control"    name="Patient_name"  value="{{data.1}}">
                            </div>
 
                            <div class="form-group col">
                                Phone:
-                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone"  value="">
+                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Phone"  value="{{data.2}}">
                            </div>
 
                            </div>
@@ -188,12 +188,12 @@
                           <div class="row">
                             <div class="form-group col">
                                 Relatives Name:
-                                <input type="text"   class="form-control"   name="Relative_name"  value="">
+                                <input type="text"   class="form-control"   name="Relative_name"  value="{{data.3}}">
                            </div>
 
                            <div class="form-group col">
                                Relatives Phone:
-                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Relative_phone"  value="">
+                               <input type="tel"   class="form-control" pattern="[+]+[8]+[8]+[0]+[1]+[0-9]{9,9}" name="Relative_phone"  value="{{data.4}}">
                            </div>
 
                            </div>
@@ -201,12 +201,12 @@
                             <div class="row">
                             <div class="form-group col">
                                 Address:
-                                <input type="text"   class="form-control"   name="Address"  value="">
+                                <input type="text"   class="form-control"   name="Address"  value="{{data.5}}">
                            </div>
 
                            <div class="form-group col">
                                Prior Ailments:
-                                <input type="text"   class="form-control"   name="Ailment"  value="">
+                                <input type="text"   class="form-control"   name="ailment"  value="{{data.6}}">
                                  </div>
 
                            </div>
@@ -215,39 +215,26 @@
 
                             <div class="form-group col">
                                 Date:
-                                <input type="datetime-local"   class="form-control"   name="date"  value="">
+                                <input type="date"   class="form-control"   name="date"  value="{{data.7}}">
                            </div>
 
                            <div class="form-group col">
                                Bed No:
-                                <input type="number"   class="form-control"   name="Bed_id"  value=""><!--selector-->
+                                <input type="number"   class="form-control"   name="Bed_id"  value="{{data.8}}">
                                  </div>
 
                            </div>
 
-                           <div class="row">
-                             <div class="form-group col">
-                               Approval:
 
-                                <select class="custom-select"   name="Approval">
-                                      <option selected>Approval</option>
-                                        <option>Accepted</option>
-                                        <option>Rejected</option>
-                                 </select>
-                           </div>
-
-                           <div class="form-group col">
+                           <div class="form-group col-6">
                                Assigned Doctor:
-                                <select class="custom-select"   name="Doctor_id">
+                                <select class="custom-select"   name="Doctor_name">
                                {% for row in doctor %}
                                    <option value="{{row.1}}">{{row.1}}</option>
                                {% endfor %}
 
                            </select>
                                  </div>
-
-                           </div>
-
 
 
                            <br><br>

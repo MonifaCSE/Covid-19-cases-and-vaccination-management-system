@@ -33,14 +33,14 @@ def contact():
 def services():
     return render_template('service.html')
 
-
-
 @app.route('/dsalary')
 def dsalary():
     return render_template('dsalary.html')
 @app.route('/rsalary')
 def rsalary():
     return render_template('rsalary.html')
+
+
 
 #...................Admin bed Request.....................
 
@@ -51,14 +51,146 @@ def abedrequest():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `patient_request` WHERE Hospital_id = '" + str(s) + "'")
          abedrequest=cursor.fetchall()
-         return render_template('abedrequest.html',abedrequest=abedrequest)
+         cursor.execute("SELECT* FROM `doctor` WHERE Hospital_id = '" + str(s) + "' and Status='Active'")
+         doctor = cursor.fetchall()
+         return render_template('abedrequest.html',abedrequest=abedrequest,doctor=doctor)
+    else:
+        return redirect('/')
+
+
+@app.route('/approveub', methods=['POST'])
+def approveub():
+        if request.method == "POST":
+
+            sno = request.form['Request_id']
+            patientname = request.form['Patient_name']
+            phone = request.form['Phone']
+            relativename=request.form['Relative_name']
+            rphone = request.form['Relative_phone']
+            address = request.form['Address']
+            pailments=request.form['ailment']
+            date=request.form['date']
+            bedno = request.form['Bed_id']
+            dname=request.form['Doctor_name']
+            hospitalid = session['Hospital_id']
+            cursor.execute(
+                """INSERT INTO PATIENT (Patient_name,Phone,Relative_name,Relative_Phone,Address,Ailment,Date,Bed_id,Doctor_name,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                (patientname,phone,relativename,rphone,address,pailments,date,bedno,dname,hospitalid))
+
+            cursor.execute(
+                """UPDATE PATIENT_REQUEST SET Patient_name=%s,Phone=%s,Relative_name=%s,Relative_Phone=%s,Address=%s,Ailment=%s,Date=%s,Bed_id=%s,Doctor_name=%s,Approval='Accepted',Hospital_id=%s  WHERE sno=%s""",
+                (patientname, phone, relativename, rphone, address, pailments, date, bedno, dname,hospitalid,sno))
+            flash("Accepted")
+            conn.commit()
+            return redirect('/abedrequest')
+
+
+
+@app.route('/deleteub/<string:requestuid>', methods=['POST', 'GET'])
+def deleteub(requestuid):
+        flash("Request has been Rejected")
+
+        cursor.execute("""UPDATE patient_request  SET  Approval="Rejected" WHERE sno=%s""",(requestuid,))
+
+        conn.commit()
+        return redirect('/abedrequest')
+
+#..............Admin Covit test..............................
+@app.route('/acovid')
+def acovid():
+    if 'Hospital_id' in session:
+         cursor.execute("SELECT* FROM `covid_test`")
+         acovid=cursor.fetchall()
+         return render_template('acovid.html',acovid=acovid)
     else:
         return redirect('/')
 
 
 
+@app.route('/insertco', methods=['POST'])
+def insertco():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+
+            name = request.form['Name']
+            address = request.form['Address']
+            email = request.form['Email']
+            phone = request.form['Phone']
+            agegroup = request.form['age_group']
+            appointment = request.form['Appointment']
+            test = request.form['Tested']
+            result = request.form['Result']
+            hospitalid = session['Hospital_id']
+
+            cursor.execute(
+                "INSERT INTO COVID_TEST (Name,Address,Email,Phone,Age_group,Appointment_date,Tested,Result,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (name,address,email,phone,agegroup,appointment,test,result,hospitalid))
+
+            conn.commit()
+            return redirect('/acovid')
+
+@app.route('/updateco', methods=['POST'])
+def updateco():
+        if request.method == "POST":
+            flash("Data Updated Successfully")
+
+            hospitalid = session['Hospital_id']
+            id = request.form['id']
+            name = request.form['Name']
+            address = request.form['Address']
+            email = request.form['Email']
+            phone = request.form['Phone']
+            agegroup = request.form['age_group']
+            if agegroup == 'Age Group':
+                agegroup = request.form['age']
+            else:
+                agegroup = request.form['age_group']
+
+            appointment = request.form['Appointment']
+
+            test = request.form['Tested']
+            if test == 'Tested':
+                test = request.form['test']
+            else:
+                test = request.form['Tested']
+
+            result = request.form['Result']
+            if result == 'Result':
+                result = request.form['res']
+            else:
+                result = request.form['Result']
+
+            cursor.execute(
+                """UPDATE COVID_TEST SET Name=%s,Address=%s,Email=%s,Phone=%s,Age_group=%s,Appointment_date=%s,Tested=%s,Result=%s,Hospital_id=%s WHERE id=%s""",
+                (name,address,email,phone,agegroup,appointment,test,result,hospitalid,id))
+
+            conn.commit()
+            return redirect('/acovid')
+
+@app.route('/deleteco/<string:covid>', methods=['POST', 'GET'])
+def deleteco(covid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM COVID_TEST WHERE ID=%s", (covid,))
+        conn.commit()
+        return redirect('/acovid')
 
 
+
+@app.route('/searchco', methods=['GET', 'POST'])
+def searchco():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        covid = request.form['covid']
+        cursor.execute("SELECT * FROM COVID_TEST WHERE (Name LIKE %s  OR Address LIKE %s OR Age_group LIKE %s OR Tested LIKE %s OR Result LIKE %s) and Hospital_id='" + str(s) + "'", (covid,covid,covid,covid,covid))
+        acovid= cursor.fetchall()
+
+        if (len(acovid) == 0 and covid == 'all') or len(covid)==0:
+            cursor.execute("SELECT * FROM COVID_TEST WHERE Hospital_id='" + str(s) + "'")
+
+            acovid = cursor.fetchall()
+        return render_template('acovid.html', acovid=acovid)
+    return redirect('/acovid')
 
 
 #..............................Superadmin panel............................................
@@ -613,7 +745,7 @@ def abedallotment():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `bed_allotment` WHERE Hospital_id = '" + str(s) + "'")
          abedallotment=cursor.fetchall()
-         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "'")
+         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "' and Status='Available' ")
          bed = cursor.fetchall()
          cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          patient = cursor.fetchall()
@@ -692,7 +824,7 @@ def apatient():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          apatient=cursor.fetchall()
-         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "'")
+         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "' and Status='Available'")
          bed = cursor.fetchall()
          cursor.execute("SELECT* FROM `doctor` WHERE Hospital_id = '" + str(s) + "'")
          doctor = cursor.fetchall()
@@ -788,9 +920,17 @@ def apayment():
          apayment=cursor.fetchall()
          cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          patient = cursor.fetchall()
-         return  render_template('apayment.html',apayment=apayment,patient=patient)
+         cursor.execute("SELECT* FROM `hospital` WHERE Hospital_id = '" + str(s) + "'")
+         h= cursor.fetchall()
+         cursor.execute("SELECT* FROM `bed_allotment` WHERE Hospital_id = '" + str(s) + "'")
+         a = cursor.fetchall()
+         return  render_template('apayment.html',apayment=apayment,patient=patient,h=h,a=a)
     else:
         return redirect('/')
+
+@app.route('/view_payment', methods=['GET', 'POST'])
+def view_payment():
+        return redirect('/adoctor')
 
 
 @app.route('/insertpp', methods=['POST'])
@@ -1300,7 +1440,7 @@ def rhome():
         s = session['Hospital_id']
         cursor.execute("SELECT * FROM HOSPITAL WHERE Hospital_id = '" + str(s) + "'")
         p = cursor.fetchone()
-        cursor.execute("SELECT COUNT(*) FROM BED_LIST WHERE Hospital_id = '" + str(s) + "'")
+        cursor.execute("SELECT COUNT(*) FROM BED_LIST WHERE Hospital_id = '" + str(s) + "' and Status='Available'")
         b = cursor.fetchone()
         return render_template('rhome.html',p=p,b=b)
     else:
@@ -1474,7 +1614,11 @@ def rbedallotment():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `bed_allotment` WHERE Hospital_id = '" + str(s) + "'")
          rbedallotment=cursor.fetchall()
-         return  render_template('rbedallotment.html',rbedallotment=rbedallotment)
+         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "' and Status='Available' ")
+         bed = cursor.fetchall()
+         cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
+         patient = cursor.fetchall()
+         return  render_template('rbedallotment.html',rbedallotment=rbedallotment,bed=bed, patient=patient)
     else:
         return redirect('/')
 
@@ -1544,7 +1688,11 @@ def rpatient():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          rpatient=cursor.fetchall()
-         return  render_template('rpatient.html',rpatient=rpatient)
+         cursor.execute("SELECT* FROM `bed_list` WHERE Hospital_id = '" + str(s) + "' and Status='Available'")
+         bed = cursor.fetchall()
+         cursor.execute("SELECT* FROM `doctor` WHERE Hospital_id = '" + str(s) + "'")
+         doctor = cursor.fetchall()
+         return  render_template('rpatient.html',rpatient=rpatient, bed=bed, doctor=doctor)
     else:
         return redirect('/')
 
@@ -1634,7 +1782,9 @@ def rpayment():
          s = session['Hospital_id']
          cursor.execute("SELECT* FROM `patient_payment` WHERE Hospital_id = '" + str(s) + "'")
          rpayment=cursor.fetchall()
-         return  render_template('rpayment.html',rpayment=rpayment)
+         cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
+         patient = cursor.fetchall()
+         return  render_template('rpayment.html',rpayment=rpayment, patient=patient)
     else:
         return redirect('/')
 
@@ -1698,6 +1848,105 @@ def searchrecpp():
             rpayment = cursor.fetchall()
         return render_template('rpayment.html',rpayment=rpayment)
     return redirect('/rpayment')
+
+
+#..............Receptionist Covit test..............................
+@app.route('/rcovid')
+def rcovid():
+    if 'Receptionist_id' in session:
+         cursor.execute("SELECT* FROM `covid_test`")
+         rcovid=cursor.fetchall()
+         return render_template('rcovid.html',rcovid=rcovid)
+    else:
+        return redirect('/')
+
+
+
+@app.route('/insertrco', methods=['POST'])
+def insertrco():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+
+            name = request.form['Name']
+            address = request.form['Address']
+            email = request.form['Email']
+            phone = request.form['Phone']
+            agegroup = request.form['age_group']
+            appointment = request.form['Appointment']
+            test = request.form['Tested']
+            result = request.form['Result']
+            hospitalid = session['Hospital_id']
+
+            cursor.execute(
+                "INSERT INTO COVID_TEST (Name,Address,Email,Phone,Age_group,Appointment_date,Tested,Result,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (name,address,email,phone,agegroup,appointment,test,result,hospitalid))
+
+            conn.commit()
+            return redirect('/rcovid')
+
+@app.route('/updaterco', methods=['POST'])
+def updaterco():
+        if request.method == "POST":
+            flash("Data Updated Successfully")
+
+            hospitalid = session['Hospital_id']
+            id = request.form['id']
+            name = request.form['Name']
+            address = request.form['Address']
+            email = request.form['Email']
+            phone = request.form['Phone']
+            agegroup = request.form['age_group']
+            if agegroup == 'Age Group':
+                agegroup = request.form['age']
+            else:
+                agegroup = request.form['age_group']
+
+            appointment = request.form['Appointment']
+
+            test = request.form['Tested']
+            if test == 'Tested':
+                test = request.form['test']
+            else:
+                test = request.form['Tested']
+
+            result = request.form['Result']
+            if result == 'Result':
+                result = request.form['res']
+            else:
+                result = request.form['Result']
+
+            cursor.execute(
+                """UPDATE COVID_TEST SET Name=%s,Address=%s,Email=%s,Phone=%s,Age_group=%s,Appointment_date=%s,Tested=%s,Result=%s,Hospital_id=%s WHERE id=%s""",
+                (name,address,email,phone,agegroup,appointment,test,result,hospitalid,id))
+
+            conn.commit()
+            return redirect('/rcovid')
+
+@app.route('/deleterco/<string:covid>', methods=['POST', 'GET'])
+def deleterco(covid):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM COVID_TEST WHERE ID=%s", (covid,))
+        conn.commit()
+        return redirect('/rcovid')
+
+
+
+@app.route('/searchrco', methods=['GET', 'POST'])
+def searchrco():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        covid = request.form['covid']
+        cursor.execute("SELECT * FROM COVID_TEST WHERE (Name LIKE %s  OR Address LIKE %s OR Age_group LIKE %s OR Tested LIKE %s OR Result LIKE %s) and Hospital_id='" + str(s) + "'", (covid,covid,covid,covid,covid))
+        rcovid= cursor.fetchall()
+
+        if (len(rcovid) == 0 and covid == 'all') or len(covid)==0:
+            cursor.execute("SELECT * FROM COVID_TEST WHERE Hospital_id='" + str(s) + "'")
+
+            rcovid = cursor.fetchall()
+        return render_template('rcovid.html', rcovid=rcovid)
+    return redirect('/rcovid')
+
 
 
 #...................Receptionist Add Doze 1........................
@@ -2033,16 +2282,7 @@ def ulogin_validation():
 
     return redirect('/')
 
-#.................Covid Test....................
-
-@app.route('/acovid')
-def acovid():
-    if 'user_id' in session:
-         cursor.execute("SELECT* FROM `covid_test`")
-         acovid=cursor.fetchall()
-         return render_template('acovid.html',acovid=acovid)
-    else:
-        return redirect('/')
+#.................User Covid Test....................
 
 
 
@@ -2065,39 +2305,7 @@ def insertur():
             conn.commit()
             return redirect('/uhome')
 
-@app.route('/approveur', methods=['POST'])
-def approveur():
-        if request.method == "POST":
 
-            requestid = request.form['Request_id']
-            hospitalname = request.form['Hospital_name']
-            district = request.form['District']
-            address = request.form['Address']
-            email = request.form['Email']
-            password = request.form['Password']
-            phone = request.form['Phone']
-
-
-            cursor.execute(
-                "INSERT INTO HOSPITAL (Hospital_name,District,Address,Email,Password,Phone,image) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-                (hospitalname, district, address, email, password, phone))
-            cursor.execute("""UPDATE covid_test 
-                                    SET  Hospital_name=%s, District=%s ,Address=%s ,Email=%s ,Password=%s ,Phone=%s ,image=%s ,Approval="Approved" WHERE Request_id=%s""",
-                           (hospitalname, district, address, email, password, phone, requestid))
-
-            flash("Accepted")
-            conn.commit()
-
-            return redirect('/acovid')
-
-@app.route('/deleteur/<string:urequestid>', methods=['POST', 'GET'])
-def deleteur(urequestid):
-        flash("Request has been Rejected")
-
-        cursor.execute("""UPDATE covid_test  SET  Approval="Rejected" WHERE Request_id=%s""",(urequestid,))
-
-        conn.commit()
-        return redirect('/acovid')
 
 
 

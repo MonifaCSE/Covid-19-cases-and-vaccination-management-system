@@ -46,7 +46,7 @@
     <div class="dp">
     <button class="dropbtn">Patient </button>
     <div class="dc">
-        <a href="/acovid">Covid Test</a>
+        <a href="/rcovid">Covid Test</a>
       <a href="/rpatient">Patient List</a>
       <a href="/rpayment">Payments</a>
     </div>
@@ -234,14 +234,22 @@
 
 
                                             <div class="form-group">
+                                Patient ID:
+                                 <select class="custom-select"   name="Patient_id">
+                               {% for row in patient %}
+                                   <option value="{{row.0}}">{{row.0}}</option>
+                               {% endfor %}
 
-                                 <input type="number" placeholder="Patient ID" class="form-control"  name="Patient_id" required="1">
-                           </div>
+                           </select> </div>
 
                             <div class="form-group">
 
-                                <input type="text"  placeholder="Patient Name" class="form-control"    name="Patient_name"  required="1">
-                           </div>
+                                 <select class="custom-select"   name="Patient_name">
+                               {% for row in patient %}
+                                   <option value="{{row.1}}">{{row.1}}</option>
+                               {% endfor %}
+
+                           </select>  </div>
                            <div class="form-group">
 
                                  <input type="number"  placeholder="Total Amount" class="form-control"  name="Total_amount" required="1">
