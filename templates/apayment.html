@@ -131,6 +131,7 @@
                  <th>Total Amount</th>
                  <th>Deposit</th>
                  <th>Due Amount</th>
+                 <th>Date</th>
                  <th>Action</th>
 
 
@@ -144,6 +145,7 @@
                     <td>{{data.3}}</td>
                     <td>{{data.4}}</td>
                    <td>{{data.5}}</td>
+                   <td>{{data.8}}</td>
                   <td>
 
 
@@ -168,22 +170,20 @@
            <div class="modal-dialog modal-lg">
                <div class="modal-content" >
                    <div class="modal-header">
-                        <h6 class="modal-title">View Doctor</h6>
+                        <h6 class="modal-title">Bill Details</h6>
                        <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                    </div>
                    <div class="modal-body" >
-
                            <div class="mm"  id="print">
-                                <h4>Hospital Bill</h4><br>
-                               <center>
-                                    <h2>{{h.1}}</h2>
-                                     <h3>{{h.3}},{{h.2}}</h3>
-                               </center>
-                                   <h6>Patient ID: {{data.1}}</h6> &nbsp; &nbsp; <h6>Patient Name: {{data.2}}</h6>
-                                  <h6>Address: {{patient.5}}</h6>&nbsp; &nbsp; <h6>Bed No: {{patient.8}}</h6>
-                                 <h6>Allotment Date:</h6> &nbsp; &nbsp; <h6>Discharge Date:</h6>
-                                 <h6>Total Amount:{{apayment.3}}</h6>&nbsp; &nbsp;<h6>Paid:{{apayment.4}}</h6>
+                              <center> <h4>{{data.7}}</h4><br>
+                                <h5>Hospital Bill</h5><br>
+                                  <h6>Date: {{data.8}}</h6><br> </center>
+                                <h6>Receipt NO: {{data.0}}</h6><br>
+                                <h6>Patient ID: {{data.1}}</h6><br>
+                               <h6>Patient Name: {{data.2}}</h6><br>
+                                 <h6>Total Amount:{{data.3}}</h6>
+                                 <h6>Paid:{{data.4}}</h6>
                            </div>
                                 <script>
                                    function myfun(paravalue){
@@ -328,6 +328,10 @@
                            <div class="form-group">
 
                                  <input type="number"  placeholder="Due Amount" class="form-control"  name="Due_amount" required="1">
+                           </div>
+                            <div class="form-group">
+
+                                 <input type="date"  placeholder="Date" class="form-control"  name="Date" required="1">
                            </div>
 
                            <div class="form-group">

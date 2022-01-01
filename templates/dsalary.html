@@ -99,14 +99,17 @@
 
 
 
-  <form class="d-flex m-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+  <form class="d-flex m-auto w-80" method="post" action="/searchds" style="margin:auto;max-width:600px">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Salary">
         <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
 
 
+
  <div class="container">
-       <br>
+
+     <button type="button" style="margin:5px;" class=" btn btn-primary float-right" data-toggle="modal" data-target="#mymodal">Add Salary</button><br>
+
      {%with messages = get_flashed_messages() %}
              {%if messages%}
              {%for message in messages%}
@@ -123,87 +126,104 @@
       <div class="table-responsive-sm">
              <table class="table table-sm thead-light table-hover table-striped">
              <tr>
-
+                <th>Sno</th>
                <th>Doctor_id</th>
                  <th>Doctor_name</th>
-                 <th>Last Paid</th>
+                 <th>Paid date</th>
+                 <th>Salary_Month</th>
                  <th>Salary</th>
-
                  <th>Action</th>
 
 
            </tr>
 
+             {%for data in dsalary%}
               <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-
-
+                     <td>{{data.0}}</td>
+                    <td>{{data.1}}</td>
+                    <td>{{data.2}}</td>
+                    <td>{{data.3}}</td>
+                  <td>{{data.4}}</td>
+                  <td>{{data.5}}</td>
                   <td>
 
-                       <a href="" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modaledit">Salary</a>
+                       <a href="/updated/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
 
-                       <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+                       <a href="/deleteds/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+             </td>
 
 
               </tr>
 
-             </table>
-  </div>
+
+
    <!--Doctor Salary Edit-->
+  <div id="modaledit{{data.0}}" class="modal fade" role="dialog">
 
-
-             <div id="modaledit" class="modal fade" role="dialog">
-
-           <div class="modal-dialog modal-xl">
+           <div class="modal-dialog">
                <div class="modal-content">
                    <div class="modal-header">
-
+                        <h6 class="modal-title">Please Update Data</h6>
                        <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                    </div>
                    <div class="modal-body">
-                       <div class="container">
-                         <div class="row">
-                           <div class="col md-2">
+                       <form    action="updateds" method="POST"   enctype="multipart/form-data">
 
-                       <button type="button" style="margin:5px;" class=" btn btn-primary float-right" data-toggle="modal" data-target="#mymodal">Add Salary</button><br>
+                            <div class="form-group">
+                                 <input type="hidden" class="form-control"  name="sno" value="{{data.0}}">
+                           </div>
+                           Doctor_id:
+                            <div class="form-group">
+                                 <input type="number" class="form-control"  name="Doctor_id" value="{{data.1}}">
+                           </div>
 
+                            Doctor_name:
+                           <div class="form-group">
 
-                   <div class="table-responsive-sm">
-             <table class="table table-sm table-hover  table-bordered  table-stripped">
-             <tr>
+                               <input type="text"   class="form-control" name="Doctor_name" value="{{data.2}}">
+                           </div>
 
-               <th>Sr.No</th>
-                  <th>Doctor_id</th>
-                 <th>Month</th>
+                          Paid Date:
+                          <div class="form-group">
 
-                 <th>Salary</th>
-                 <th>Paid Date</th>
-                 <th>Action</th>
-
-
-           </tr>
-
-              <tr>
-                    <td>sss</td>
-                    <td>sss</td>
-                    <td>ddd</td>
-                    <td>ddd</td>
-                   <td>sss</td>
-
-                  <td>
-                      <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
-                  </td>
+                               <input type="date"   class="form-control" name="Paid_date" value="{{data.3}}">
+                           </div>
 
 
-              </tr>
+                            Month:
+                           <div class="form-group">
 
+                               <input type="month"   class="form-control" name="Month" value="{{data.4}}">
+                           </div>
+
+                           Salary:
+                          <div class="form-group">
+
+                               <input type="number"    class="form-control" name="Salary" value="{{data.5}}">
+                           </div>
+
+                             <br>
+                            <div class="form-group">
+                              <button class="btn btn-primary" type="submit">Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           </div>
+
+
+
+                       </form>
+
+
+                   </div>
+
+               </div>
+           </div>
+       </div>
+        {%endfor%}
              </table>
            </div>
+
+
 
 
 
@@ -219,30 +239,45 @@
                    </div>
                    <div class="modal-body">
 
-                       <form  action="" method="POST"  enctype="multipart/form-data">
+                       <form  action="insertds" method="POST"  enctype="multipart/form-data">
                             Doctor id:
                            <div class="form-group">
+                              <select class="custom-select"   name="Doctor_id">
+                               {% for row in doctor %}
+                                   <option value="{{row.0}}">{{row.0}}</option>
+                               {% endfor %}
 
-                               <input type="number"   class="form-control" name="Doctor_id" value="">
+                              </select>
+                           </div>
+                           Doctor Name:
+                           <div class="form-group">
+
+                               <select class="custom-select"   name="Doctor_name">
+                               {% for row in doctor %}
+                                   <option value="{{row.1}}">{{row.1}}</option>
+                               {% endfor %}
+
+                           </select>
                            </div>
 
-                           Month:
+                           Paid Date:
+                          <div class="form-group">
+
+                               <input type="date"   class="form-control" name="Paid_date" required="1">
+                           </div>
+
+
+                              Salary_Month:
                            <div class="form-group">
 
                                <input type="month"   class="form-control" name="Month" required="1">
                            </div>
-
                           Salary:
                           <div class="form-group">
 
                                <input type="number"    class="form-control" name="Salary" required="1">
                            </div>
 
-                           Paid Date:
-                          <div class="form-group">
-
-                               <input type="datetime-local"   class="form-control" name="Paid_date" required="1">
-                           </div>
                              <br>
 
                            <div class="form-group">
@@ -265,23 +300,6 @@
 
 
 
-
-
-            </div>
-            </div>
-                       </div>
-
-
-                   </div>
-
-               </div>
-           </div>
-       </div>
-
-
-<!--End Doctor Salary Edit-->
-
- </div>
  </div>
 
       <script src="static/js/jQuery.js"></script>

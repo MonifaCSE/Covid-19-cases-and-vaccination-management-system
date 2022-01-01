@@ -33,14 +33,6 @@ def contact():
 def services():
     return render_template('service.html')
 
-@app.route('/dsalary')
-def dsalary():
-    return render_template('dsalary.html')
-@app.route('/rsalary')
-def rsalary():
-    return render_template('rsalary.html')
-
-
 
 #...................Admin bed Request.....................
 
@@ -506,6 +498,7 @@ def login_admin():
     if (admin):
         if len(admin) > 0:
             session['Hospital_id'] = admin[0][0]
+            session['Hospital_name'] = admin[0][1]
             return redirect('/ahome')
 
     return redirect('/')
@@ -655,6 +648,161 @@ def searchd():
             adoctor = cursor.fetchall()
         return render_template('adoctor.html', adoctor=adoctor)
     return redirect('/adoctor')
+#.............................Doctor Salary..................................
+@app.route('/dsalary')
+def dsalary():
+    if 'Hospital_id' in session:
+         s = session['Hospital_id']
+         cursor.execute("SELECT* FROM doctor_salary WHERE Hospital_id = '" + str(s) + "'")
+         dsalary=cursor.fetchall()
+         cursor.execute("SELECT* FROM doctor WHERE Hospital_id = '" + str(s) + "'")
+         doctor = cursor.fetchall()
+         return  render_template('dsalary.html',dsalary=dsalary,doctor=doctor)
+    else:
+        return redirect('/')
+
+@app.route('/insertds', methods=['POST'])
+def insertds():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            doctorid = request.form['Doctor_id']
+            doctorname = request.form['Doctor_name']
+            paid = request.form['Paid_date']
+            month = request.form['Month']
+            salary = request.form['Salary']
+
+            hospitalid=session['Hospital_id']
+
+            cursor.execute(
+                "INSERT INTO DOCTOR_SALARY (Doctor_id,Doctor_name,Paid_date,Month,Salary,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s)",
+                (doctorid,doctorname,paid,month,salary,hospitalid))
+            conn.commit()
+            return redirect('/dsalary')
+
+@app.route('/updateds', methods=['GET', 'POST'])
+def updateds():
+        if request.method == "POST":
+
+            sno = request.form['sno']
+            doctorid = request.form['Doctor_id']
+            doctorname = request.form['Doctor_name']
+            paid = request.form['Paid_date']
+            month = request.form['Month']
+            salary = request.form['Salary']
+
+            cursor.execute("""UPDATE doctor_salary 
+            SET  Doctor_id=%s,Doctor_name=%s,Paid_date=%s,Month=%s,Salary=%s  WHERE sno=%s""", (doctorid,doctorname,paid,month,salary,sno))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/dsalary')
+
+@app.route('/deleteds/<string:sno>', methods=['POST', 'GET'])
+def deleteds(sno):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM doctor_salary WHERE sno=%s", (sno,))
+        conn.commit()
+        return redirect('/dsalary')
+
+
+
+@app.route('/searchds', methods=['GET', 'POST'])
+def searchds():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        salary = request.form['Salary']
+        cursor.execute("SELECT * FROM doctor_salary WHERE (Doctor_id LIKE %s OR Doctor_name LIKE %s OR Paid_date LIKE %s OR Salary LIKE %s) and Hospital_id='"+str(s)+"'", (salary,salary,salary,salary))
+        dsalary = cursor.fetchall()
+
+        if (len(dsalary) == 0 and salary == 'all') or len(salary)==0:
+            cursor.execute("SELECT * FROM doctor_salary WHERE Hospital_id='"+str(s)+"'")
+
+            dsalary = cursor.fetchall()
+        return render_template('dsalary.html', dsalary=dsalary)
+    return redirect('/dsalary')
+
+
+
+#.............................Receptionist Salary..................................
+
+@app.route('/rsalary')
+def rsalary():
+    if 'Hospital_id' in session:
+         s = session['Hospital_id']
+         cursor.execute("SELECT* FROM receptionist_salary WHERE Hospital_id = '" + str(s) + "'")
+         rsalary=cursor.fetchall()
+         cursor.execute("SELECT* FROM receptionist WHERE Hospital_id = '" + str(s) + "'")
+         receptionist = cursor.fetchall()
+         return  render_template('rsalary.html',rsalary=rsalary,receptionist=receptionist)
+    else:
+        return redirect('/')
+
+@app.route('/insertrs', methods=['POST'])
+def insertrs():
+        if request.method == "POST":
+            flash("Data Inserted Successfully")
+            recid = request.form['Receptionist_id']
+            recname = request.form['Receptionist_name']
+            paid = request.form['Paid_date']
+            month = request.form['Month']
+            salary = request.form['Salary']
+
+            hospitalid=session['Hospital_id']
+
+            cursor.execute(
+                "INSERT INTO RECEPTIONIST_SALARY (Receptionist_id,Receptionist_name,Paid_date,Month,Salary,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s)",
+                (recid ,recname,paid,month,salary,hospitalid))
+            conn.commit()
+            return redirect('/rsalary')
+
+@app.route('/updaters', methods=['GET', 'POST'])
+def updaters():
+        if request.method == "POST":
+
+            sno = request.form['sno']
+            recid = request.form['Receptionist_id']
+            recname = request.form['Receptionist_name']
+            paid = request.form['Paid_date']
+            month = request.form['Month']
+            salary = request.form['Salary']
+
+            cursor.execute("""UPDATE receptionist_salary 
+            SET  Receptionist_id=%s,Receptionist_name=%s,Paid_date=%s,Month=%s,Salary=%s  WHERE sno=%s""", (recid,recname,paid,month,salary,sno))
+            flash("Data Updated Successfully")
+            conn.commit()
+
+            return redirect('/rsalary')
+
+@app.route('/deleters/<string:sno>', methods=['POST', 'GET'])
+def deleters(sno):
+        flash("Record has been deleted successfully")
+
+        cursor.execute("DELETE FROM Receptionist_salary WHERE sno=%s", (sno,))
+        conn.commit()
+        return redirect('/rsalary')
+
+
+
+@app.route('/searchrs', methods=['GET', 'POST'])
+def searchrs():
+    if request.method == "POST" and  'Hospital_id' in session:
+        s = session['Hospital_id']
+        salary = request.form['Salary']
+        cursor.execute("SELECT * FROM receptionist_salary WHERE (Receptionist_id LIKE %s OR Receptionist_name LIKE %s OR Paid_date LIKE %s OR Salary LIKE %s) and Hospital_id='"+str(s)+"'", (salary,salary,salary,salary))
+        rsalary = cursor.fetchall()
+
+        if (len(rsalary) == 0 and salary == 'all') or len(salary)==0:
+            cursor.execute("SELECT * FROM receptionist_salary WHERE Hospital_id='"+str(s)+"'")
+
+            rsalary = cursor.fetchall()
+        return render_template('rsalary.html', rsalary=rsalary)
+    return redirect('/rsalary')
+
+
+
+
+
 
 
 #............................Add Bed.............................
@@ -920,17 +1068,14 @@ def apayment():
          apayment=cursor.fetchall()
          cursor.execute("SELECT* FROM `patient` WHERE Hospital_id = '" + str(s) + "'")
          patient = cursor.fetchall()
-         cursor.execute("SELECT* FROM `hospital` WHERE Hospital_id = '" + str(s) + "'")
-         h= cursor.fetchall()
-         cursor.execute("SELECT* FROM `bed_allotment` WHERE Hospital_id = '" + str(s) + "'")
-         a = cursor.fetchall()
-         return  render_template('apayment.html',apayment=apayment,patient=patient,h=h,a=a)
+         return  render_template('apayment.html',apayment=apayment,patient=patient)
     else:
         return redirect('/')
 
 @app.route('/view_payment', methods=['GET', 'POST'])
 def view_payment():
-        return redirect('/adoctor')
+
+        return redirect('/apayment')
 
 
 @app.route('/insertpp', methods=['POST'])
@@ -938,15 +1083,16 @@ def insertpp():
         if request.method == "POST":
             flash("Data Inserted Successfully")
             hospitalid=session['Hospital_id']
+            hospitalname = session['Hospital_name']
             patientid = request.form['Patient_id']
             patientname = request.form['Patient_name']
             totalamount = request.form['Total_amount']
             deposit=request.form['Deposit']
             dueamount = request.form['Due_amount']
-
+            date = request.form['Date']
             cursor.execute(
-                "INSERT INTO PATIENT_PAYMENT (Patient_id,Patient_name,Total_amount,Deposit,Due_amount,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s)",
-                (patientid,patientname,totalamount,deposit,dueamount,hospitalid))
+                "INSERT INTO PATIENT_PAYMENT (Patient_id,Patient_name,Total_amount,Deposit,Due_amount,Hospital_id,Hospital_name,Date) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+                (patientid,patientname,totalamount,deposit,dueamount,hospitalid,hospitalname,date))
             conn.commit()
             return redirect('/apayment')
 
@@ -1025,12 +1171,11 @@ def insertre():
             file1 = request.files['file1']
             filename1 = secure_filename(file1.filename)
             file1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
-
             hospitalid=session['Hospital_id']
-
+            hospitalname = session['Hospital_name']
             cursor.execute(
-                "INSERT INTO RECEPTIONIST (Receptionist_name,Address,Email,Password,Phone,Shift,Status,image,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (receptionistname,address,email,password,phone,shift,status,filename1,hospitalid))
+                "INSERT INTO RECEPTIONIST (Receptionist_name,Address,Email,Password,Phone,Shift,Status,image,Hospital_id,Hospital_name) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (receptionistname,address,email,password,phone,shift,status,filename1,hospitalid,hospitalname))
             conn.commit()
             return redirect('/areceptionist')
 
@@ -1458,6 +1603,7 @@ def login_rec():
     if (rec):
         if len(rec) > 0:
             session['Hospital_id'] = rec[0][9]
+            session['Hospital_name'] = rec[0][10]
             session['Receptionist_id']=rec[0][0]
             return redirect('/rhome')
 
@@ -1789,20 +1935,27 @@ def rpayment():
         return redirect('/')
 
 
+@app.route('/view_paymentr', methods=['GET', 'POST'])
+def view_paymentr():
+
+        return redirect('/rpayment')
+
 @app.route('/insertrecpp', methods=['POST'])
 def insertrecpp():
         if request.method == "POST":
             flash("Data Inserted Successfully")
             hospitalid=session['Hospital_id']
+            hospitalname = session['Hospital_name']
             patientid = request.form['Patient_id']
             patientname = request.form['Patient_name']
             totalamount = request.form['Total_amount']
             deposit=request.form['Deposit']
             dueamount = request.form['Due_amount']
+            date = request.form['Date']
 
             cursor.execute(
-                "INSERT INTO PATIENT_PAYMENT (Patient_id,Patient_name,Total_amount,Deposit,Due_amount,Hospital_id) VALUES (%s,%s,%s,%s,%s,%s)",
-                (patientid,patientname,totalamount,deposit,dueamount,hospitalid))
+                "INSERT INTO PATIENT_PAYMENT (Patient_id,Patient_name,Total_amount,Deposit,Due_amount,Hospital_id,Hospital_name,Date) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+                (patientid,patientname,totalamount,deposit,dueamount,hospitalid,hospitalname,date))
             conn.commit()
             return redirect('/rpayment')
 

@@ -113,6 +113,7 @@
                  <th>Total Amount</th>
                  <th>Deposit</th>
                  <th>Due Amount</th>
+                 <th>Date</th>
                  <th>Action</th>
 
 
@@ -126,23 +127,66 @@
                     <td>{{data.3}}</td>
                     <td>{{data.4}}</td>
                    <td>{{data.5}}</td>
+                   <td>{{data.8}}</td>
                   <td>
 
 
 
                        <a href="/updaterecpp/{{data.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{data.0}}">Edit</a>
-                        <button class="btn btn-success btn-xs" onclick="myfun()">Print</button>
-                        <script>
-                            function myfun(){
-                            window.print();
-                            }
-                        </script>
+                        <a href="/view_paymentr/{{data.0}}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalview{{data.0}}">Print</a>
+
                        <a href="/deleterecpp/{{data.0}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
 
                        </td>
 
 
               </tr>
+
+
+
+<!--Print-->
+
+                 <!--Print-->
+                 <div id="modalview{{data.0}}" class="modal fade"  role="dialog">
+
+           <div class="modal-dialog modal-lg">
+               <div class="modal-content" >
+                   <div class="modal-header">
+                        <h6 class="modal-title">Bill Details</h6>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                   </div>
+                   <div class="modal-body" >
+                           <div class="mm"  id="print">
+                              <center> <h4>{{data.7}}</h4><br>
+                                <h5>Hospital Bill</h5><br>
+                               <h6>Date: {{data.8}}</h6><br> </center>
+                               <h6>Receipt NO: {{data.0}}</h6><br>
+                                <h6>Patient ID: {{data.1}}</h6><br>
+                               <h6>Patient Name: {{data.2}}</h6><br>
+                                 <h6>Total Amount:{{data.3}}</h6>&nbsp; &nbsp;<h6>Paid:{{data.4}}</h6>
+                           </div>
+                                <script>
+                                   function myfun(paravalue){
+                                    var backup=document.body.innerHTML;
+                                        var divcontent=document.getElementById(paravalue).innerHTML;
+                                            document.body.innerHTML=divcontent;
+                                           window.print();
+                                             document.body.innerHTML=backup;
+                                            }
+                                     </script>
+
+
+
+                             <button class="btn btn-success btn-xs" onclick="myfun('print')">Print</button>
+
+                   </div>
+
+
+               </div>
+           </div>
+       </div>
+
 
 
 
@@ -265,6 +309,10 @@
                            <div class="form-group">
 
                                  <input type="number"  placeholder="Due Amount" class="form-control"  name="Due_amount" required="1">
+                           </div>
+                            <div class="form-group">
+
+                                 <input type="date"  placeholder="Date" class="form-control"  name="Date" required="1">
                            </div>
 
                            <div class="form-group">
