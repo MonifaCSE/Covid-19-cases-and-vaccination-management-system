@@ -1463,8 +1463,8 @@ def updatedoze2():
                 conn.commit()
 
                 cursor.execute("""UPDATE vaccinated
-                                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment1=%s,Doze1=%s  WHERE ID=%s""",
-                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1, id))
+                                            SET  Name=%s ,Address=%s ,NID=%s,Phone_number=%s ,Age_group=%s,Allergies=%s,Prior_ailments=%s,Doze_name=%s ,Appointment1=%s,Doze1=%s,Appointment2=%s,Doze2=%s  WHERE ID=%s""",
+                               (name, address, nid, phone, agegroup, allergies, ailments, doze, appointment, doze1,appointment2, doze2, id))
                 flash("Data Updated Successfully")
                 conn.commit()
 

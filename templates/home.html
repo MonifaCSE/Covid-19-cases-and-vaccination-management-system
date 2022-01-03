@@ -77,6 +77,20 @@
 
        <button type="button" style="margin-top:400px; margin-right:550px;" class="btn btn-primary float-right" data-toggle="modal" data-target="#mymodal">Register Hospital</button>
 
+             {%with messages = get_flashed_messages() %}
+             {%if messages%}
+             {%for message in messages%}
+             <div class="alert alert-success alert-dismissable w-75" role="alert">
+                  <button type="button" class="close " data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">x</span>
+                  </button>
+                  {{message}}
+              </div>
+
+             {%endfor%}
+             {%endif%}
+             {%endwith%}
+
 
  <div class="bot">
 
